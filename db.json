@@ -1,0 +1,57 @@
+{
+  "notes": [
+    {
+      "id": 0,
+      "name": "Shopping list",
+      "created": 1653084000000,
+      "category": "task",
+      "content": "Tomatoes, bread",
+      "dates": []
+    },
+    {
+      "id": 1,
+      "name": "The theory of evolution",
+      "created": 1645657200000,
+      "category": "random",
+      "content": "The evolution is a very hard question. ",
+      "dates": []
+    },
+    {
+      "id": 2,
+      "name": "New Feature",
+      "created": 1641250800000,
+      "category": "idea",
+      "content": "Implement new notes class from 02.01.2022 to 04.01.2022",
+      "dates": [
+        1641078000000,
+        1641250800000
+      ]
+    },
+    {
+      "name": "Uliana",
+      "category": "task",
+      "content": "What if i try no create note",
+      "created": 1663682221000,
+      "id": 3
+    },
+    {
+      "name": "todo for today",
+      "category": "task",
+      "content": "Read 20 pages about projects architecture",
+      "created": 1663753780000,
+      "dates": [],
+      "id": 4
+    },
+    {
+      "name": "War",
+      "category": "random",
+      "content": "I feel strange things, as it was 22.02.2022, when i've decided to move from my country",
+      "created": 1663753879000,
+      "dates": [
+        1645484400000
+      ],
+      "id": 5
+    }
+  ],
+  "archive": []
+}
