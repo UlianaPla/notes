@@ -1,5 +1,12 @@
-import { getResource } from "../services/services";
-import { openModalForNote } from './modal';
+import { getResource, deleteData } from "../services/services";
+import { openModalForNote, showThanksModal } from './modal';
+
+const urlNotes = 'http://localhost:3000/notes',
+    message = {
+        successArchive: 'Note has been archived',
+        successDelete: 'Note has been deleted',
+        failure: 'Oops, something went wrong...'
+    };
 
 function notes() {
 
@@ -51,15 +58,35 @@ function notes() {
         }
     }
 
+    function getNoteIdFromElement(element) {
+        return Number(element.getAttribute('data-noteId'));
+    }
+
     function subscribeElement(element) {
         const btnEdit = element.querySelector("#edit"),
             btnArchive = element.querySelector("#archive"),
             btnDelete = element.querySelector("#delete");
 
         btnEdit.addEventListener('click', (e) => {
-            const noteId = Number(e.target.getAttribute('data-noteId'));
+            const noteId = getNoteIdFromElement(e.target);
             openModalForNote(noteById[noteId]);
         });
+
+        btnDelete.addEventListener('click', (e) => {
+            const noteId = getNoteIdFromElement(e.target);
+            deleteNoteFromServer(noteId);
+        })
+    }
+
+    function deleteNoteFromServer(noteId) {
+        deleteData(urlNotes + `/${noteId}`)
+            .then(data => {
+                console.log(data);
+                showThanksModal(message.successDelete);
+            })
+            .catch(() => {
+                showThanksModal(message.failure);
+            });
     }
 
     function formatString(string) {
@@ -71,20 +98,20 @@ function notes() {
         return string;
     }
 
-    function parseDate(ms) {
-        const date = new Date(ms);
-        const day = date.getDate();
-        const month = date.getMonth() + 1;
-        const year = date.getFullYear();
-        return `${getZero(day)}.${getZero(month)}.${getZero(year)}`;
-    }
-
     function getZero(num) {
         if (num >= 0 && num < 10) {
             return `0${num}`;
         } else {
             return num;
         }
+    }
+
+    function parseDate(ms) {
+        const date = new Date(ms);
+        const day = date.getDate();
+        const month = date.getMonth() + 1;
+        const year = date.getFullYear();
+        return `${getZero(day)}.${getZero(month)}.${getZero(year)}`;
     }
 
     function parseDates(datesArray) {
@@ -94,7 +121,8 @@ function notes() {
         if (datesArray.length == 1)
             return parseDate(datesArray[0]);
 
-        return datesArray.reduce((result, current) => `${parseDate(result)}, ${parseDate(current)}`);
+        return datesArray.reduce((result, current) =>
+            `${typeof (result) === 'number' ? parseDate(result) : result}, ${parseDate(current)}`);
     }
 
     function getCategoryName(categoryType) {

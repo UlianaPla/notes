@@ -28,13 +28,6 @@
       ]
     },
     {
-      "name": "Uliana",
-      "category": "idea",
-      "content": "What if i try to create note",
-      "dates": [],
-      "id": 3
-    },
-    {
       "name": "todo for today",
       "category": "task",
       "content": "Read 20 pages about projects architecture",
@@ -61,13 +54,6 @@
       "id": 6
     },
     {
-      "name": "Uliana",
-      "category": "idea",
-      "content": "What if i try to create note",
-      "dates": [],
-      "id": 7
-    },
-    {
       "name": "Thursday",
       "category": "task",
       "content": "Go to the PostOffice after 5p.m.",
@@ -84,6 +70,49 @@
         1664402400000
       ],
       "id": 9
+    },
+    {
+      "name": "ulia",
+      "category": "task",
+      "content": "some note just for test",
+      "created": 1663845618000,
+      "dates": [],
+      "id": 10
+    },
+    {
+      "name": "todo",
+      "category": "task",
+      "content": "a need to finish project 21.09.2022 or 23.09.2022, because deadline for 3 projects is 30.09.2022",
+      "created": 1663845680000,
+      "dates": [
+        1663711200000,
+        1663884000000,
+        1664488800000
+      ],
+      "id": 11
+    },
+    {
+      "name": "check",
+      "category": "idea",
+      "content": "what if i try to. hvjhv create a note with 4 dates: 22.09.2022, 23.09.2022 and finnaly 25.09.2022",
+      "created": 1663846803000,
+      "dates": [
+        1663797600000,
+        1663884000000,
+        1664056800000
+      ],
+      "id": 12
+    },
+    {
+      "name": "Uliana",
+      "category": "task",
+      "content": " 23.09.2022 312 dsgfserfds eqwde 24.09.2023",
+      "created": 1663847023000,
+      "dates": [
+        1663884000000,
+        1695506400000
+      ],
+      "id": 13
     }
   ],
   "archive": []

@@ -13,19 +13,16 @@ function openModal() {
 }
 
 function openModalForNote(note) {
-    
+
     openModal();
     updateForm(note);
 }
 
 function closeModal() {
-
     const modal = document.querySelector(modalSelector);
 
     modal.classList.add('hide');
     modal.classList.remove('show');
-
-    resetForm();
 
     document.body.style.overflow = '';
 }
@@ -47,11 +44,13 @@ function showThanksModal(message) {
 
     document.querySelector('.modal').append(thanksModal);
 
+    console.log('start timeout');
     setTimeout(() => {
         thanksModal.remove();
         previousModalDialog.classList.add('show');
         previousModalDialog.classList.remove('hide');
         closeModal('.modal');
+        resetForm();
     }, 4000);
 }
 
@@ -77,4 +76,4 @@ function modal(triggerSelector, selector) {
 }
 
 export default modal;
-export { showThanksModal, openModalForNote};
+export { showThanksModal, openModalForNote };

@@ -34,4 +34,16 @@ const editData = async(url, data) => {
     return await res.json();
 }
 
-export {postData, editData, getResource};
+const deleteData = async(url) => {
+    
+    const res = await fetch(url, {
+        method: "DELETE",
+        headers: {
+            'Content-type': 'application/json'
+        }
+    });
+
+    return await res.json();
+}
+
+export {postData, editData, deleteData, getResource};

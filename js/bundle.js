@@ -187,19 +187,16 @@ function openModal() {
 }
 
 function openModalForNote(note) {
-    
+
     openModal();
     (0,_form__WEBPACK_IMPORTED_MODULE_0__.updateForm)(note);
 }
 
 function closeModal() {
-
     const modal = document.querySelector(modalSelector);
 
     modal.classList.add('hide');
     modal.classList.remove('show');
-
-    (0,_form__WEBPACK_IMPORTED_MODULE_0__.resetForm)();
 
     document.body.style.overflow = '';
 }
@@ -221,11 +218,13 @@ function showThanksModal(message) {
 
     document.querySelector('.modal').append(thanksModal);
 
+    console.log('start timeout');
     setTimeout(() => {
         thanksModal.remove();
         previousModalDialog.classList.add('show');
         previousModalDialog.classList.remove('hide');
         closeModal('.modal');
+        (0,_form__WEBPACK_IMPORTED_MODULE_0__.resetForm)();
     }, 4000);
 }
 
@@ -270,6 +269,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modal__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modal */ "./js/modules/modal.js");
 
 
+
+const urlNotes = 'http://localhost:3000/notes',
+    message = {
+        successArchive: 'Note has been archived',
+        successDelete: 'Note has been deleted',
+        failure: 'Oops, something went wrong...'
+    };
 
 function notes() {
 
@@ -321,15 +327,35 @@ function notes() {
         }
     }
 
+    function getNoteIdFromElement(element) {
+        return Number(element.getAttribute('data-noteId'));
+    }
+
     function subscribeElement(element) {
         const btnEdit = element.querySelector("#edit"),
             btnArchive = element.querySelector("#archive"),
             btnDelete = element.querySelector("#delete");
 
         btnEdit.addEventListener('click', (e) => {
-            const noteId = Number(e.target.getAttribute('data-noteId'));
+            const noteId = getNoteIdFromElement(e.target);
             (0,_modal__WEBPACK_IMPORTED_MODULE_1__.openModalForNote)(noteById[noteId]);
         });
+
+        btnDelete.addEventListener('click', (e) => {
+            const noteId = getNoteIdFromElement(e.target);
+            deleteNoteFromServer(noteId);
+        })
+    }
+
+    function deleteNoteFromServer(noteId) {
+        (0,_services_services__WEBPACK_IMPORTED_MODULE_0__.deleteData)(urlNotes + `/${noteId}`)
+            .then(data => {
+                console.log(data);
+                (0,_modal__WEBPACK_IMPORTED_MODULE_1__.showThanksModal)(message.successDelete);
+            })
+            .catch(() => {
+                (0,_modal__WEBPACK_IMPORTED_MODULE_1__.showThanksModal)(message.failure);
+            });
     }
 
     function formatString(string) {
@@ -341,20 +367,20 @@ function notes() {
         return string;
     }
 
-    function parseDate(ms) {
-        const date = new Date(ms);
-        const day = date.getDate();
-        const month = date.getMonth() + 1;
-        const year = date.getFullYear();
-        return `${getZero(day)}.${getZero(month)}.${getZero(year)}`;
-    }
-
     function getZero(num) {
         if (num >= 0 && num < 10) {
             return `0${num}`;
         } else {
             return num;
         }
+    }
+
+    function parseDate(ms) {
+        const date = new Date(ms);
+        const day = date.getDate();
+        const month = date.getMonth() + 1;
+        const year = date.getFullYear();
+        return `${getZero(day)}.${getZero(month)}.${getZero(year)}`;
     }
 
     function parseDates(datesArray) {
@@ -364,7 +390,8 @@ function notes() {
         if (datesArray.length == 1)
             return parseDate(datesArray[0]);
 
-        return datesArray.reduce((result, current) => `${parseDate(result)}, ${parseDate(current)}`);
+        return datesArray.reduce((result, current) =>
+            `${typeof (result) === 'number' ? parseDate(result) : result}, ${parseDate(current)}`);
     }
 
     function getCategoryName(categoryType) {
@@ -399,6 +426,7 @@ function notes() {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "deleteData": () => (/* binding */ deleteData),
 /* harmony export */   "editData": () => (/* binding */ editData),
 /* harmony export */   "getResource": () => (/* binding */ getResource),
 /* harmony export */   "postData": () => (/* binding */ postData)
@@ -434,6 +462,18 @@ const editData = async(url, data) => {
             'Content-type': 'application/json'
         },
         body: data
+    });
+
+    return await res.json();
+}
+
+const deleteData = async(url) => {
+    
+    const res = await fetch(url, {
+        method: "DELETE",
+        headers: {
+            'Content-type': 'application/json'
+        }
     });
 
     return await res.json();
@@ -913,8 +953,10 @@ var Promise = (__webpack_require__(/*! es6-promise-polyfill */ "./node_modules/e
 
 
 
-
+let counter = 0;
 window.addEventListener('DOMContentLoaded', () => {
+
+    console.log(++counter);
     (0,_modules_modal__WEBPACK_IMPORTED_MODULE_1__["default"])('[data-modal]', '.modal');
     (0,_modules_notes__WEBPACK_IMPORTED_MODULE_2__["default"])();
     (0,_modules_form__WEBPACK_IMPORTED_MODULE_3__["default"])('form');
