@@ -1,4 +1,8 @@
-function openModal(modalSelector) {
+import { resetForm, updateForm } from './form';
+
+let modalSelector;
+
+function openModal() {
 
     const modal = document.querySelector(modalSelector);
 
@@ -8,37 +12,69 @@ function openModal(modalSelector) {
     document.body.style.overflow = 'hidden';
 }
 
-function closeModal(modalSelector) {
+function openModalForNote(note) {
+    
+    openModal();
+    updateForm(note);
+}
+
+function closeModal() {
 
     const modal = document.querySelector(modalSelector);
 
     modal.classList.add('hide');
     modal.classList.remove('show');
 
+    resetForm();
+
     document.body.style.overflow = '';
 }
 
-function modal(triggerSelector, modalSelector) {
+function showThanksModal(message) {
+    const previousModalDialog = document.querySelector('.modal__dialog');
+
+    previousModalDialog.classList.add('hide');
+    openModal();
+
+    const thanksModal = document.createElement('div');
+    thanksModal.classList.add('modal__dialog');
+    thanksModal.innerHTML = `
+        <div class="modal__content">
+            <div data-close class="modal__close">×</div>
+            <div class="modal__title">${message}</div>            
+        </div>
+    `;
+
+    document.querySelector('.modal').append(thanksModal);
+
+    setTimeout(() => {
+        thanksModal.remove();
+        previousModalDialog.classList.add('show');
+        previousModalDialog.classList.remove('hide');
+        closeModal('.modal');
+    }, 4000);
+}
+
+function modal(triggerSelector, selector) {
+    modalSelector = selector;
 
     const modal = document.querySelector(modalSelector);
 
     modal.addEventListener('click', (e) => {
         if (e.target === modal || e.target.classList.contains('modal__close')) {
-            closeModal(modalSelector);
+            closeModal();
         }
     });
 
-    document.querySelector(triggerSelector)
-        .addEventListener('click', () => openModal(modalSelector));
+    document.querySelectorAll(triggerSelector)
+        .forEach((btn) => btn.addEventListener('click', () => openModal()));
 
     document.addEventListener('keydown', (e) => {
         if (e.code === "Escape" && modal.classList.contains("show")) {
-            closeModal(modalSelector);
+            closeModal();
         }
     });
-
 }
 
 export default modal;
-export { closeModal };
-export { openModal };
+export { showThanksModal, openModalForNote};

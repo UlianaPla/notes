@@ -1,4 +1,5 @@
 const postData = async (url, data) => {
+    
     const res = await fetch(url, {
         method: "POST",
         headers: {
@@ -20,5 +21,17 @@ const getResource = async (url) => {
     return await res.json();
 };
 
-export {postData};
-export {getResource};
+const editData = async(url, data) => {
+    
+    const res = await fetch(url, {
+        method: "PATCH",
+        headers: {
+            'Content-type': 'application/json'
+        },
+        body: data
+    });
+
+    return await res.json();
+}
+
+export {postData, editData, getResource};

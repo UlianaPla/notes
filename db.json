@@ -21,7 +21,7 @@
       "name": "New Feature",
       "created": 1641250800000,
       "category": "idea",
-      "content": "Implement new notes class from 02.01.2022 to 04.01.2022",
+      "content": "Implement new notes class",
       "dates": [
         1641078000000,
         1641250800000
@@ -29,9 +29,9 @@
     },
     {
       "name": "Uliana",
-      "category": "task",
-      "content": "What if i try no create note",
-      "created": 1663682221000,
+      "category": "idea",
+      "content": "What if i try to create note",
+      "dates": [],
       "id": 3
     },
     {
@@ -51,6 +51,39 @@
         1645484400000
       ],
       "id": 5
+    },
+    {
+      "name": "Weather thoughts",
+      "category": "random",
+      "content": "When it is cold outside, it's easier to work",
+      "created": 1663766641000,
+      "dates": [],
+      "id": 6
+    },
+    {
+      "name": "Uliana",
+      "category": "idea",
+      "content": "What if i try to create note",
+      "dates": [],
+      "id": 7
+    },
+    {
+      "name": "Thursday",
+      "category": "task",
+      "content": "Go to the PostOffice after 5p.m.",
+      "created": 1663844076000,
+      "dates": [],
+      "id": 8
+    },
+    {
+      "name": "todo",
+      "category": "task",
+      "content": "Finish pull request fixing untill 29.09.2022",
+      "created": 1663844218000,
+      "dates": [
+        1664402400000
+      ],
+      "id": 9
     }
   ],
   "archive": []

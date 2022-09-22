@@ -29,14 +29,14 @@
         </table>
         <br>
         <div>
-            <button id="createNoteBtn" class="btn btn_white">Create Note</button>
+            <button data-modal class="btn btn_white">Create Note</button>
         </div>
     </div>
 
     <div class="modal">
         <div class="modal__dialog">
             <div class="modal__content">
-                <form action="#">
+                <form data-id="-1" action="#">
                     <div data-close class="modal__close">&times;</div>
                     <div class="modal__title">Fill the fields</div>
                     <input required placeholder="Note name" name="name" type="text" class="modal__input">

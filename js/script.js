@@ -3,11 +3,10 @@ import 'nodelist-foreach-polyfill';
 
 import modal from './modules/modal';
 import notes from './modules/notes';
-import forms from './modules/forms';
+import form from './modules/form';
 
 window.addEventListener('DOMContentLoaded', () => {
-
-    modal('#createNoteBtn', '.modal');
+    modal('[data-modal]', '.modal');
     notes();
-    forms('form');
+    form('form');
 });

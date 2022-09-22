@@ -1,37 +1,113 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./js/modules/forms.js":
-/*!*****************************!*\
-  !*** ./js/modules/forms.js ***!
-  \*****************************/
+/***/ "./js/modules/form.js":
+/*!****************************!*\
+  !*** ./js/modules/form.js ***!
+  \****************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
+/* harmony export */   "resetForm": () => (/* binding */ resetForm),
+/* harmony export */   "updateForm": () => (/* binding */ updateForm)
 /* harmony export */ });
 /* harmony import */ var _modal__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modal */ "./js/modules/modal.js");
 /* harmony import */ var _services_services__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../services/services */ "./js/services/services.js");
 
 
 
-function forms(formSelector) {
+const urlNotes = 'http://localhost:3000/notes';
+const message = {
+    loading: 'icons/spinner.svg',
+    success: 'Note has been added',
+    successEdit: 'Note has been edited',
+    failure: 'Oops, something went wrong...'
+};
 
-    const forms = document.querySelectorAll(formSelector);
+const dateReg = /(0?[1-9]|[12][0-9]|3[01])[\/\/.](0?[1-9]|1[012])[\/\/.]\d{4}/g,
+    dividerSlash = '/', // Note: if changing dividers -> change the regular expression
+    dividerDot = '.';
 
-    const message = {
-        loading: 'icons/spinner.svg',
-        success: 'Note has been added',
-        failure: 'Oops, something went wrong...'
-    };
+let formSelector;
 
-    const dateReg = /(0?[1-9]|[12][0-9]|3[01])[\/\/.](0?[1-9]|1[012])[\/\/.]\d{4}/g,
-        dividerSlash = '/', // Note: if changing dividers -> change the regular expression
-        dividerDot = '.';
+/**
+ * Fill data from Form with needed data.
+ * @returns Object of Note, that shoul be saved.
+ */
+function fillData(data, isEditMode) {
+    let dataObj = Object.fromEntries(data);
 
-    forms.forEach(item => bindPostData(item));
+    if (!isEditMode)
+        dataObj.created = Date.parse(new Date());
+
+    dataObj.dates = parseDatesFromContent(dataObj.content);
+
+    return dataObj;
+}
+
+/**
+ * Found and parse dates with format like '02.09.2022' or '02/09/2022'
+ * @param {String} content
+ * @returns array of milliseconds founded dates
+ */
+function parseDatesFromContent(content) {
+    const dateStrings = content.match(dateReg);
+
+    if (!dateStrings)
+        return [];
+
+    let datesArray = dateStrings.map((str) => {
+        const [day, month, year] = str.indexOf(dividerSlash) > 0
+            ? str.split(dividerSlash)
+            : str.split(dividerDot);
+
+        return new Date(+year, +month - 1, +day).getTime();
+    });
+
+    return datesArray;
+}
+
+function updateForm(data) {
+
+    const { name, category, content, id } = data;
+
+    const form = document.querySelector(formSelector),
+        titleElement = form.querySelector('.modal__title'),
+        noteNameElement = form.querySelector('input[name="name"]'),
+        typesElement = form.querySelector('#noteTypes'),
+        contentElement = form.querySelector('input[name="content"]'),
+        btnSubmit = form.querySelector('.btn');
+
+    noteNameElement.value = name;
+    typesElement.value = category;
+    contentElement.value = content;
+
+    titleElement.textContent = "Edit your note";
+    btnSubmit.textContent = 'Save';
+    form.setAttribute('data-id', id);
+}
+
+function resetForm() {
+    const form = document.querySelector(formSelector);
+    form.reset();
+    form.setAttribute('data-noteId', -1);
+
+    const titleElement = form.querySelector('.modal__title'),
+        btnSubmit = form.querySelector('.btn');
+
+    titleElement.textContent = "Fill the fields";
+    btnSubmit.textContent = "Create";
+}
+
+function form(selector) {
+    formSelector = selector;
+
+    const form = document.querySelector(formSelector);
+
+    bindPostData(form);
 
     function bindPostData(form) {
         form.addEventListener('submit', (e) => {
@@ -46,85 +122,39 @@ function forms(formSelector) {
 
             form.insertAdjacentElement('afterend', statusMessage);
 
-            const formData = new FormData(form);
-            const data = fillData(formData.entries());
-            const json = JSON.stringify(data);
-
-            (0,_services_services__WEBPACK_IMPORTED_MODULE_1__.postData)('http://localhost:3000/notes', json)
-                .then(data => {
-                    console.log(data);
-                    showThanksModal(message.success);
-                    statusMessage.remove();
-                })
-                .catch(() => {
-                    showThanksModal(message.failure);
-                })
-                .finally(() => {
-                    form.reset();
-                });
+            sendDataToServer(form, statusMessage);
         });
     }
 
-    /**
-     * Fill data from Form with needed data.
-     * @returns Object of Note, that shoul be saved.
-     */
-    function fillData(data) {
-        let dataObj = Object.fromEntries(data);
+    function sendDataToServer(form, statusMessage) {
 
-        dataObj.created = Date.parse(new Date());
-        dataObj.dates = parseDatesFromContent(dataObj.content);
+        const formData = new FormData(form);
+        const noteId = form.getAttribute('data-id'),
+            isEditMode = noteId > -1;
 
-        return dataObj;
-    }
+        const data = fillData(formData.entries(), isEditMode);
+        const json = JSON.stringify(data);
+        let url = urlNotes;
 
-    /**
-     * Found and parse dates with format like '02.09.2022' or '02/09/2022'
-     * @param {String} content
-     * @returns array of milliseconds founded dates
-     */
-    function parseDatesFromContent(content) {
-        const dateStrings = content.match(dateReg);
+        if (isEditMode)
+            url += `/${noteId}`;
 
-        let datesArray = dateStrings
-            ? dateStrings.map((str) => {
-                const [day, month, year] = str.indexOf(dividerSlash) > 0
-                    ? str.split(dividerSlash)
-                    : str.split(dividerDot);
+        const promise = isEditMode ? _services_services__WEBPACK_IMPORTED_MODULE_1__.editData : _services_services__WEBPACK_IMPORTED_MODULE_1__.postData;
 
-                return new Date(+year, +month - 1, +day).getTime();
+        promise(url, json)
+            .then(data => {
+                console.log(data);
+                (0,_modal__WEBPACK_IMPORTED_MODULE_0__.showThanksModal)(isEditMode ? message.successEdit : message.success);
+                statusMessage.remove();
             })
-            : [];
-
-        return datesArray;
+            .catch(() => {
+                (0,_modal__WEBPACK_IMPORTED_MODULE_0__.showThanksModal)(message.failure);
+            });
     }
-
-    function showThanksModal(message) {
-        const previousModalDialog = document.querySelector('.modal__dialog');
-
-        previousModalDialog.classList.add('hide');
-        (0,_modal__WEBPACK_IMPORTED_MODULE_0__.openModal)('.modal');
-
-        const thanksModal = document.createElement('div');
-        thanksModal.classList.add('modal__dialog');
-        thanksModal.innerHTML = `
-            <div class="modal__content">
-                <div data-close class="modal__close">×</div>
-                <div class="modal__title">${message}</div>            
-            </div>
-        `;
-
-        document.querySelector('.modal').append(thanksModal);
-        setTimeout(() => {
-            thanksModal.remove();
-            previousModalDialog.classList.add('show');
-            previousModalDialog.classList.remove('hide');
-            (0,_modal__WEBPACK_IMPORTED_MODULE_0__.closeModal)('.modal');
-        }, 4000);
-    }
-
 }
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (forms);
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (form);
+
 
 /***/ }),
 
@@ -137,11 +167,16 @@ function forms(formSelector) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "closeModal": () => (/* binding */ closeModal),
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
-/* harmony export */   "openModal": () => (/* binding */ openModal)
+/* harmony export */   "openModalForNote": () => (/* binding */ openModalForNote),
+/* harmony export */   "showThanksModal": () => (/* binding */ showThanksModal)
 /* harmony export */ });
-function openModal(modalSelector) {
+/* harmony import */ var _form__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./form */ "./js/modules/form.js");
+
+
+let modalSelector;
+
+function openModal() {
 
     const modal = document.querySelector(modalSelector);
 
@@ -151,39 +186,71 @@ function openModal(modalSelector) {
     document.body.style.overflow = 'hidden';
 }
 
-function closeModal(modalSelector) {
+function openModalForNote(note) {
+    
+    openModal();
+    (0,_form__WEBPACK_IMPORTED_MODULE_0__.updateForm)(note);
+}
+
+function closeModal() {
 
     const modal = document.querySelector(modalSelector);
 
     modal.classList.add('hide');
     modal.classList.remove('show');
 
+    (0,_form__WEBPACK_IMPORTED_MODULE_0__.resetForm)();
+
     document.body.style.overflow = '';
 }
 
-function modal(triggerSelector, modalSelector) {
+function showThanksModal(message) {
+    const previousModalDialog = document.querySelector('.modal__dialog');
+
+    previousModalDialog.classList.add('hide');
+    openModal();
+
+    const thanksModal = document.createElement('div');
+    thanksModal.classList.add('modal__dialog');
+    thanksModal.innerHTML = `
+        <div class="modal__content">
+            <div data-close class="modal__close">×</div>
+            <div class="modal__title">${message}</div>            
+        </div>
+    `;
+
+    document.querySelector('.modal').append(thanksModal);
+
+    setTimeout(() => {
+        thanksModal.remove();
+        previousModalDialog.classList.add('show');
+        previousModalDialog.classList.remove('hide');
+        closeModal('.modal');
+    }, 4000);
+}
+
+function modal(triggerSelector, selector) {
+    modalSelector = selector;
 
     const modal = document.querySelector(modalSelector);
 
     modal.addEventListener('click', (e) => {
         if (e.target === modal || e.target.classList.contains('modal__close')) {
-            closeModal(modalSelector);
+            closeModal();
         }
     });
 
-    document.querySelector(triggerSelector)
-        .addEventListener('click', () => openModal(modalSelector));
+    document.querySelectorAll(triggerSelector)
+        .forEach((btn) => btn.addEventListener('click', () => openModal()));
 
     document.addEventListener('keydown', (e) => {
         if (e.code === "Escape" && modal.classList.contains("show")) {
-            closeModal(modalSelector);
+            closeModal();
         }
     });
-
 }
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (modal);
-
 
 
 /***/ }),
@@ -200,6 +267,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _services_services__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../services/services */ "./js/services/services.js");
+/* harmony import */ var _modal__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modal */ "./js/modules/modal.js");
+
 
 
 function notes() {
@@ -210,9 +279,13 @@ function notes() {
             random: 'Random Thought',
             idea: 'Idea'
         }
+
+    let noteById = {};
+
     // Используем классы для карточек
     class NoteItem {
-        constructor(name, created, category, content, dates, parentSelector) {
+        constructor(id, name, created, category, content, dates, parentSelector) {
+            this.id = id;
             this.name = name;
             this.created = created;
             this.category = category;
@@ -221,7 +294,6 @@ function notes() {
             this.parent = document.querySelector(parentSelector);
         }
 
-        // Формирует верстку
         render() {
             const element = document.createElement('tr');
             element.classList.add('note__item');
@@ -239,13 +311,25 @@ function notes() {
                 <td>${contentFormatted}</td>
                 <td>${datesAsString}</td>
                 <td>
-                    <img class="btn_icon" src="icons/edit.svg" alt="edit">
-                    <img class="btn_icon" src="icons/archive_dark.svg" alt="archive">
-                    <img class="btn_icon" src="icons/delete_dark.svg" alt="delete">
+                    <img id="edit" data-noteId="${this.id}" data-modal class="btn_icon" src="icons/edit.svg" alt="edit">
+                    <img id="archive" data-noteId="${this.id}" class="btn_icon" src="icons/archive_dark.svg" alt="archive">
+                    <img id="delete" data-noteId="${this.id}" class="btn_icon" src="icons/delete_dark.svg" alt="delete">
                 </td>            
                 `;
+            subscribeElement(element);
             this.parent.append(element);
         }
+    }
+
+    function subscribeElement(element) {
+        const btnEdit = element.querySelector("#edit"),
+            btnArchive = element.querySelector("#archive"),
+            btnDelete = element.querySelector("#delete");
+
+        btnEdit.addEventListener('click', (e) => {
+            const noteId = Number(e.target.getAttribute('data-noteId'));
+            (0,_modal__WEBPACK_IMPORTED_MODULE_1__.openModalForNote)(noteById[noteId]);
+        });
     }
 
     function formatString(string) {
@@ -292,19 +376,14 @@ function notes() {
 
     (0,_services_services__WEBPACK_IMPORTED_MODULE_0__.getResource)('http://localhost:3000/notes')
         .then(data => {
-            // Используем деструктуризацию:
-            data.forEach(({
-                name,
-                created,
-                category,
-                content,
-                dates,
-                isArchived
-            }) => {
-                if (!isArchived)
-                    new NoteItem(name, created, category, content, dates, "#table_notes").render();
+            data.forEach((item) => {
+                noteById[item.id] = item;
+
+                if (!item.isArchived)
+                    new NoteItem(item.id, item.name, item.created, item.category, item.content, item.dates, "#table_notes").render();
             });
         });
+
 }
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (notes);
@@ -320,10 +399,12 @@ function notes() {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "editData": () => (/* binding */ editData),
 /* harmony export */   "getResource": () => (/* binding */ getResource),
 /* harmony export */   "postData": () => (/* binding */ postData)
 /* harmony export */ });
 const postData = async (url, data) => {
+    
     const res = await fetch(url, {
         method: "POST",
         headers: {
@@ -345,6 +426,18 @@ const getResource = async (url) => {
     return await res.json();
 };
 
+const editData = async(url, data) => {
+    
+    const res = await fetch(url, {
+        method: "PATCH",
+        headers: {
+            'Content-type': 'application/json'
+        },
+        body: data
+    });
+
+    return await res.json();
+}
 
 
 
@@ -813,7 +906,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var nodelist_foreach_polyfill__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(nodelist_foreach_polyfill__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _modules_modal__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/modal */ "./js/modules/modal.js");
 /* harmony import */ var _modules_notes__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/notes */ "./js/modules/notes.js");
-/* harmony import */ var _modules_forms__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/forms */ "./js/modules/forms.js");
+/* harmony import */ var _modules_form__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/form */ "./js/modules/form.js");
 var Promise = (__webpack_require__(/*! es6-promise-polyfill */ "./node_modules/es6-promise-polyfill/promise.js").Promise);
 
 
@@ -822,10 +915,9 @@ var Promise = (__webpack_require__(/*! es6-promise-polyfill */ "./node_modules/e
 
 
 window.addEventListener('DOMContentLoaded', () => {
-
-    (0,_modules_modal__WEBPACK_IMPORTED_MODULE_1__["default"])('#createNoteBtn', '.modal');
+    (0,_modules_modal__WEBPACK_IMPORTED_MODULE_1__["default"])('[data-modal]', '.modal');
     (0,_modules_notes__WEBPACK_IMPORTED_MODULE_2__["default"])();
-    (0,_modules_forms__WEBPACK_IMPORTED_MODULE_3__["default"])('form');
+    (0,_modules_form__WEBPACK_IMPORTED_MODULE_3__["default"])('form');
 });
 })();
 

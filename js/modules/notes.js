@@ -1,4 +1,5 @@
 import { getResource } from "../services/services";
+import { openModalForNote } from './modal';
 
 function notes() {
 
@@ -8,9 +9,13 @@ function notes() {
             random: 'Random Thought',
             idea: 'Idea'
         }
+
+    let noteById = {};
+
     // Используем классы для карточек
     class NoteItem {
-        constructor(name, created, category, content, dates, parentSelector) {
+        constructor(id, name, created, category, content, dates, parentSelector) {
+            this.id = id;
             this.name = name;
             this.created = created;
             this.category = category;
@@ -19,7 +24,6 @@ function notes() {
             this.parent = document.querySelector(parentSelector);
         }
 
-        // Формирует верстку
         render() {
             const element = document.createElement('tr');
             element.classList.add('note__item');
@@ -37,13 +41,25 @@ function notes() {
                 <td>${contentFormatted}</td>
                 <td>${datesAsString}</td>
                 <td>
-                    <img class="btn_icon" src="icons/edit.svg" alt="edit">
-                    <img class="btn_icon" src="icons/archive_dark.svg" alt="archive">
-                    <img class="btn_icon" src="icons/delete_dark.svg" alt="delete">
+                    <img id="edit" data-noteId="${this.id}" data-modal class="btn_icon" src="icons/edit.svg" alt="edit">
+                    <img id="archive" data-noteId="${this.id}" class="btn_icon" src="icons/archive_dark.svg" alt="archive">
+                    <img id="delete" data-noteId="${this.id}" class="btn_icon" src="icons/delete_dark.svg" alt="delete">
                 </td>            
                 `;
+            subscribeElement(element);
             this.parent.append(element);
         }
+    }
+
+    function subscribeElement(element) {
+        const btnEdit = element.querySelector("#edit"),
+            btnArchive = element.querySelector("#archive"),
+            btnDelete = element.querySelector("#delete");
+
+        btnEdit.addEventListener('click', (e) => {
+            const noteId = Number(e.target.getAttribute('data-noteId'));
+            openModalForNote(noteById[noteId]);
+        });
     }
 
     function formatString(string) {
@@ -90,19 +106,14 @@ function notes() {
 
     getResource('http://localhost:3000/notes')
         .then(data => {
-            // Используем деструктуризацию:
-            data.forEach(({
-                name,
-                created,
-                category,
-                content,
-                dates,
-                isArchived
-            }) => {
-                if (!isArchived)
-                    new NoteItem(name, created, category, content, dates, "#table_notes").render();
+            data.forEach((item) => {
+                noteById[item.id] = item;
+
+                if (!item.isArchived)
+                    new NoteItem(item.id, item.name, item.created, item.category, item.content, item.dates, "#table_notes").render();
             });
         });
+
 }
 
 export default notes;
