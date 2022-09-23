@@ -21,11 +21,8 @@
       "name": "New Feature",
       "created": 1641250800000,
       "category": "idea",
-      "content": "Implement new notes class",
-      "dates": [
-        1641078000000,
-        1641250800000
-      ]
+      "content": "Add table with archived notes sdfsad",
+      "dates": []
     },
     {
       "name": "todo for today",
@@ -51,7 +48,8 @@
       "content": "When it is cold outside, it's easier to work",
       "created": 1663766641000,
       "dates": [],
-      "id": 6
+      "id": 6,
+      "isArchived": true
     },
     {
       "name": "Thursday",
@@ -72,14 +70,6 @@
       "id": 9
     },
     {
-      "name": "ulia",
-      "category": "task",
-      "content": "some note just for test",
-      "created": 1663845618000,
-      "dates": [],
-      "id": 10
-    },
-    {
       "name": "todo",
       "category": "task",
       "content": "a need to finish project 21.09.2022 or 23.09.2022, because deadline for 3 projects is 30.09.2022",
@@ -94,7 +84,7 @@
     {
       "name": "check",
       "category": "idea",
-      "content": "what if i try to. hvjhv create a note with 4 dates: 22.09.2022, 23.09.2022 and finnaly 25.09.2022",
+      "content": "what if i try to hvjhv create a note with 4 dates: 22.09.2022, 23.09.2022 and finnaly 25.09.2022",
       "created": 1663846803000,
       "dates": [
         1663797600000,
@@ -106,13 +96,66 @@
     {
       "name": "Uliana",
       "category": "task",
-      "content": " 23.09.2022 312 dsgfserfds eqwde 24.09.2023",
-      "created": 1663847023000,
-      "dates": [
-        1663884000000,
-        1695506400000
-      ],
+      "content": "dwedsvfscwefwefwefw",
+      "created": 1663917536000,
+      "dates": [],
       "id": 13
+    },
+    {
+      "name": "check",
+      "category": "idea",
+      "content": "i should take an antibiotik",
+      "created": 1663917640000,
+      "dates": [],
+      "id": 14,
+      "isArchived": true
+    },
+    {
+      "name": "check",
+      "category": "task",
+      "content": "What if i try to create note",
+      "created": 1663920601000,
+      "dates": [],
+      "id": 19,
+      "isArchived": true
+    },
+    {
+      "name": "Thursday",
+      "category": "random",
+      "content": "dwedsvfscwefwefwefw",
+      "created": 1663920815000,
+      "dates": [],
+      "id": 20,
+      "isArchived": true
+    },
+    {
+      "name": "Uliana",
+      "category": "random",
+      "content": "What if i try to create note",
+      "created": 1663920867000,
+      "dates": [],
+      "id": 21,
+      "isArchived": true
+    },
+    {
+      "name": "Uliana",
+      "category": "task",
+      "content": "a need to finish project 21.09.2022 or 23.09.2022, because deadline for 3 projects is 30.09.2022",
+      "created": 1663936101000,
+      "dates": [
+        1663711200000,
+        1663884000000,
+        1664488800000
+      ],
+      "id": 22
+    },
+    {
+      "name": "Uliana Plakhotnycha ",
+      "category": "idea",
+      "content": "What if i try to create note",
+      "created": 1663941806000,
+      "dates": [],
+      "id": 23
     }
   ],
   "archive": []

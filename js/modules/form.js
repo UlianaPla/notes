@@ -73,6 +73,7 @@ function updateForm(data) {
 }
 
 function resetForm() {
+    console.warn('form.reset');
     const form = document.querySelector(formSelector);
     form.reset();
     form.setAttribute('data-noteId', -1);

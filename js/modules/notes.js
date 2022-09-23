@@ -1,4 +1,4 @@
-import { getResource, deleteData } from "../services/services";
+import { getData, editData, deleteData } from "../services/services";
 import { openModalForNote, showThanksModal } from './modal';
 
 const urlNotes = 'http://localhost:3000/notes',
@@ -17,9 +17,9 @@ function notes() {
             idea: 'Idea'
         }
 
-    let noteById = {};
+    let noteById = [],
+        notesByCategory = {};
 
-    // Используем классы для карточек
     class NoteItem {
         constructor(id, name, created, category, content, dates, parentSelector) {
             this.id = id;
@@ -58,6 +58,33 @@ function notes() {
         }
     }
 
+    class CategoryItem {
+        constructor(value, active, archived, parentSelector) {
+            this.value = value;
+            this.active = active;
+            this.archived = archived;
+            this.parent = document.querySelector(parentSelector);
+        }
+        render() {
+            const element = document.createElement('tr');
+            element.classList.add('note__item');
+
+            const categoryName = getCategoryName(this.value);
+
+            element.innerHTML = `               
+                <td>${categoryName}</td>
+                <td>${this.active}</td>
+                <td>${this.archived}</td>         
+                `;
+            this.parent.append(element);
+        }
+        updateWithNote(note) {
+            if (note.isArchived)
+                this.archived++;
+            else
+                this.active++;
+        }
+    }
     function getNoteIdFromElement(element) {
         return Number(element.getAttribute('data-noteId'));
     }
@@ -68,14 +95,36 @@ function notes() {
             btnDelete = element.querySelector("#delete");
 
         btnEdit.addEventListener('click', (e) => {
+            e.preventDefault();
             const noteId = getNoteIdFromElement(e.target);
             openModalForNote(noteById[noteId]);
         });
-
+        btnArchive.addEventListener('click', (e) => {
+            e.preventDefault();
+            const noteId = getNoteIdFromElement(e.target);
+            markNoteAsArchived(noteById[noteId]);
+        })
         btnDelete.addEventListener('click', (e) => {
+            e.preventDefault();
             const noteId = getNoteIdFromElement(e.target);
             deleteNoteFromServer(noteId);
         })
+    }
+
+    function markNoteAsArchived(note) {
+        console.log('archive')
+        note.isArchived = true;
+        const json = JSON.stringify(note);
+        console.log(json);
+
+        editData(urlNotes + `/${note.id}`, json)
+            .then(data => {
+                console.log(data);
+                showThanksModal(message.successArchive);
+            })
+            .catch(() => {
+                showThanksModal(message.failure);
+            });
     }
 
     function deleteNoteFromServer(noteId) {
@@ -132,15 +181,31 @@ function notes() {
         return categoryTitleByValue[categoryType];
     }
 
-    getResource('http://localhost:3000/notes')
+    function updateSummary() {
+        noteById.forEach((item) => {
+            const categoryItem = notesByCategory[item.category];
+            if (categoryItem)
+                categoryItem.updateWithNote(item);
+            else
+                notesByCategory[item.category] = new CategoryItem(item.category, 0, 0, "#table_summary");
+        });
+
+        for (const [key, value] of Object.entries(notesByCategory)) {
+            value.render();
+        }
+    }
+
+    getData('http://localhost:3000/notes')
         .then(data => {
             data.forEach((item) => {
                 noteById[item.id] = item;
 
                 if (!item.isArchived)
                     new NoteItem(item.id, item.name, item.created, item.category, item.content, item.dates, "#table_notes").render();
-            });
-        });
+            })
+
+        })
+        .then(updateSummary);
 
 }
 

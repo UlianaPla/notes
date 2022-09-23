@@ -91,6 +91,7 @@ function updateForm(data) {
 }
 
 function resetForm() {
+    console.warn('form.reset');
     const form = document.querySelector(formSelector);
     form.reset();
     form.setAttribute('data-noteId', -1);
@@ -217,13 +218,14 @@ function showThanksModal(message) {
     `;
 
     document.querySelector('.modal').append(thanksModal);
+    console.log('start timer');
 
-    console.log('start timeout');
     setTimeout(() => {
         thanksModal.remove();
         previousModalDialog.classList.add('show');
         previousModalDialog.classList.remove('hide');
         closeModal('.modal');
+
         (0,_form__WEBPACK_IMPORTED_MODULE_0__.resetForm)();
     }, 4000);
 }
@@ -235,6 +237,7 @@ function modal(triggerSelector, selector) {
 
     modal.addEventListener('click', (e) => {
         if (e.target === modal || e.target.classList.contains('modal__close')) {
+            console.log('modal close event handler')
             closeModal();
         }
     });
@@ -286,9 +289,9 @@ function notes() {
             idea: 'Idea'
         }
 
-    let noteById = {};
+    let noteById = [],
+        notesByCategory = {};
 
-    // Используем классы для карточек
     class NoteItem {
         constructor(id, name, created, category, content, dates, parentSelector) {
             this.id = id;
@@ -327,6 +330,33 @@ function notes() {
         }
     }
 
+    class CategoryItem {
+        constructor(value, active, archived, parentSelector) {
+            this.value = value;
+            this.active = active;
+            this.archived = archived;
+            this.parent = document.querySelector(parentSelector);
+        }
+        render() {
+            const element = document.createElement('tr');
+            element.classList.add('note__item');
+
+            const categoryName = getCategoryName(this.value);
+
+            element.innerHTML = `               
+                <td>${categoryName}</td>
+                <td>${this.active}</td>
+                <td>${this.archived}</td>         
+                `;
+            this.parent.append(element);
+        }
+        updateWithNote(note) {
+            if (note.isArchived)
+                this.archived++;
+            else
+                this.active++;
+        }
+    }
     function getNoteIdFromElement(element) {
         return Number(element.getAttribute('data-noteId'));
     }
@@ -337,14 +367,36 @@ function notes() {
             btnDelete = element.querySelector("#delete");
 
         btnEdit.addEventListener('click', (e) => {
+            e.preventDefault();
             const noteId = getNoteIdFromElement(e.target);
             (0,_modal__WEBPACK_IMPORTED_MODULE_1__.openModalForNote)(noteById[noteId]);
         });
-
+        btnArchive.addEventListener('click', (e) => {
+            e.preventDefault();
+            const noteId = getNoteIdFromElement(e.target);
+            markNoteAsArchived(noteById[noteId]);
+        })
         btnDelete.addEventListener('click', (e) => {
+            e.preventDefault();
             const noteId = getNoteIdFromElement(e.target);
             deleteNoteFromServer(noteId);
         })
+    }
+
+    function markNoteAsArchived(note) {
+        console.log('archive')
+        note.isArchived = true;
+        const json = JSON.stringify(note);
+        console.log(json);
+
+        (0,_services_services__WEBPACK_IMPORTED_MODULE_0__.editData)(urlNotes + `/${note.id}`, json)
+            .then(data => {
+                console.log(data);
+                (0,_modal__WEBPACK_IMPORTED_MODULE_1__.showThanksModal)(message.successArchive);
+            })
+            .catch(() => {
+                (0,_modal__WEBPACK_IMPORTED_MODULE_1__.showThanksModal)(message.failure);
+            });
     }
 
     function deleteNoteFromServer(noteId) {
@@ -401,15 +453,31 @@ function notes() {
         return categoryTitleByValue[categoryType];
     }
 
-    (0,_services_services__WEBPACK_IMPORTED_MODULE_0__.getResource)('http://localhost:3000/notes')
+    function updateSummary() {
+        noteById.forEach((item) => {
+            const categoryItem = notesByCategory[item.category];
+            if (categoryItem)
+                categoryItem.updateWithNote(item);
+            else
+                notesByCategory[item.category] = new CategoryItem(item.category, 0, 0, "#table_summary");
+        });
+
+        for (const [key, value] of Object.entries(notesByCategory)) {
+            value.render();
+        }
+    }
+
+    (0,_services_services__WEBPACK_IMPORTED_MODULE_0__.getData)('http://localhost:3000/notes')
         .then(data => {
             data.forEach((item) => {
                 noteById[item.id] = item;
 
                 if (!item.isArchived)
                     new NoteItem(item.id, item.name, item.created, item.category, item.content, item.dates, "#table_notes").render();
-            });
-        });
+            })
+
+        })
+        .then(updateSummary);
 
 }
 
@@ -428,7 +496,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "deleteData": () => (/* binding */ deleteData),
 /* harmony export */   "editData": () => (/* binding */ editData),
-/* harmony export */   "getResource": () => (/* binding */ getResource),
+/* harmony export */   "getData": () => (/* binding */ getResource),
 /* harmony export */   "postData": () => (/* binding */ postData)
 /* harmony export */ });
 const postData = async (url, data) => {
@@ -953,10 +1021,9 @@ var Promise = (__webpack_require__(/*! es6-promise-polyfill */ "./node_modules/e
 
 
 
-let counter = 0;
+
 window.addEventListener('DOMContentLoaded', () => {
 
-    console.log(++counter);
     (0,_modules_modal__WEBPACK_IMPORTED_MODULE_1__["default"])('[data-modal]', '.modal');
     (0,_modules_notes__WEBPACK_IMPORTED_MODULE_2__["default"])();
     (0,_modules_form__WEBPACK_IMPORTED_MODULE_3__["default"])('form');

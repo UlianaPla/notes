@@ -46,4 +46,4 @@ const deleteData = async(url) => {
     return await res.json();
 }
 
-export {postData, editData, deleteData, getResource};
+export {postData, editData, deleteData, getResource as getData};

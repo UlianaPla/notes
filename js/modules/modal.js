@@ -43,13 +43,14 @@ function showThanksModal(message) {
     `;
 
     document.querySelector('.modal').append(thanksModal);
+    console.log('start timer');
 
-    console.log('start timeout');
     setTimeout(() => {
         thanksModal.remove();
         previousModalDialog.classList.add('show');
         previousModalDialog.classList.remove('hide');
         closeModal('.modal');
+
         resetForm();
     }, 4000);
 }
@@ -61,6 +62,7 @@ function modal(triggerSelector, selector) {
 
     modal.addEventListener('click', (e) => {
         if (e.target === modal || e.target.classList.contains('modal__close')) {
+            console.log('modal close event handler')
             closeModal();
         }
     });
