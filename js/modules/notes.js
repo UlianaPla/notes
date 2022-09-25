@@ -21,13 +21,14 @@ function notes() {
         notesByCategory = {};
 
     class NoteItem {
-        constructor(id, name, created, category, content, dates, parentSelector) {
+        constructor(id, name, created, category, content, dates, isArchived, parentSelector) {
             this.id = id;
             this.name = name;
             this.created = created;
             this.category = category;
             this.content = content;
             this.dates = dates;
+            this.isArchived = isArchived;
             this.parent = document.querySelector(parentSelector);
         }
 
@@ -47,54 +48,29 @@ function notes() {
                 <td>${categoryName}</td>
                 <td>${contentFormatted}</td>
                 <td>${datesAsString}</td>
-                <td>
-                    <img id="edit" data-noteId="${this.id}" data-modal class="btn_icon" src="icons/edit.svg" alt="edit">
-                    <img id="archive" data-noteId="${this.id}" class="btn_icon" src="icons/archive_dark.svg" alt="archive">
-                    <img id="delete" data-noteId="${this.id}" class="btn_icon" src="icons/delete_dark.svg" alt="delete">
-                </td>            
-                `;
+                ${buttons(this)}`;
 
             subscribeElement(element);
             this.parent.append(element);
         }
     }
-
-    class ArchivedNoteItem {
-        constructor(id, name, created, category, content, dates, parentSelector) {
-            this.id = id;
-            this.name = name;
-            this.created = created;
-            this.category = category;
-            this.content = content;
-            this.dates = dates;
-            this.parent = document.querySelector(parentSelector);
-        }
-
-        render() {
-            const element = document.createElement('tr');
-            element.classList.add('note__item');
-
-            const nameFormatted = formatString(this.name),
-                createdAsString = parseDate(this.created),
-                categoryName = getCategoryName(this.category),
-                contentFormatted = formatString(this.content),
-                datesAsString = parseDates(this.dates);
-
-            element.innerHTML = `               
-                <td>${nameFormatted}</td>
-                <td>${createdAsString}</td>
-                <td>${categoryName}</td>
-                <td>${contentFormatted}</td>
-                <td>${datesAsString}</td>
+    
+    function buttons(item) {
+        let buttonsHTML;
+        if (item.isArchived)
+            buttonsHTML = `
                 <td>
-                    <img id="unarchive" data-noteId="${this.id}" class="btn_icon" src="icons/unarchive.svg" alt="unarchive">
-                    <img id="delete" data-noteId="${this.id}" class="btn_icon" src="icons/delete_dark.svg" alt="delete">
-                </td>            
-                `;
-
-            subscribeElement(element);
-            this.parent.append(element);
-        }
+                    <img id="unarchive" data-noteId="${item.id}" class="btn_icon" src="icons/unarchive.svg" alt="unarchive">
+                    <img id="delete" data-noteId="${item.id}" class="btn_icon" src="icons/delete_dark.svg" alt="delete">
+                </td>    `;
+        else
+            buttonsHTML =
+                `<td>
+                    <img id="edit" data-noteId="${item.id}" data-modal class="btn_icon" src="icons/edit.svg" alt="edit">
+                    <img id="archive" data-noteId="${item.id}" class="btn_icon" src="icons/archive_dark.svg" alt="archive">
+                    <img id="delete" data-noteId="${item.id}" class="btn_icon" src="icons/delete_dark.svg" alt="delete">
+                </td>  `;
+        return buttonsHTML;
     }
 
     class CategoryItem {
@@ -256,10 +232,17 @@ function notes() {
             data.forEach((item) => {
                 noteById[item.id] = item;
 
-                if (item.isArchived)
-                    new ArchivedNoteItem(item.id, item.name, item.created, item.category, item.content, item.dates, "#table_archieved").render();
-                else
-                    new NoteItem(item.id, item.name, item.created, item.category, item.content, item.dates, "#table_notes").render();
+                const tableId = item.isArchived ? "#table_archieved" : "#table_notes";
+
+                new NoteItem(item.id,
+                    item.name,
+                    item.created,
+                    item.category,
+                    item.content,
+                    item.dates,
+                    item.isArchived,
+                    tableId)
+                    .render();
             })
 
         })

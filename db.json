@@ -143,7 +143,8 @@
       "content": "What if i try to create note",
       "created": 1663941806000,
       "dates": [],
-      "id": 23
+      "id": 23,
+      "isArchived": true
     },
     {
       "name": "Coffee",
