@@ -325,16 +325,55 @@ function notes() {
                     <img id="delete" data-noteId="${this.id}" class="btn_icon" src="icons/delete_dark.svg" alt="delete">
                 </td>            
                 `;
+
+            subscribeElement(element);
+            this.parent.append(element);
+        }
+    }
+
+    class ArchivedNoteItem {
+        constructor(id, name, created, category, content, dates, parentSelector) {
+            this.id = id;
+            this.name = name;
+            this.created = created;
+            this.category = category;
+            this.content = content;
+            this.dates = dates;
+            this.parent = document.querySelector(parentSelector);
+        }
+
+        render() {
+            const element = document.createElement('tr');
+            element.classList.add('note__item');
+
+            const nameFormatted = formatString(this.name),
+                createdAsString = parseDate(this.created),
+                categoryName = getCategoryName(this.category),
+                contentFormatted = formatString(this.content),
+                datesAsString = parseDates(this.dates);
+
+            element.innerHTML = `               
+                <td>${nameFormatted}</td>
+                <td>${createdAsString}</td>
+                <td>${categoryName}</td>
+                <td>${contentFormatted}</td>
+                <td>${datesAsString}</td>
+                <td>
+                    <img id="unarchive" data-noteId="${this.id}" class="btn_icon" src="icons/unarchive.svg" alt="unarchive">
+                    <img id="delete" data-noteId="${this.id}" class="btn_icon" src="icons/delete_dark.svg" alt="delete">
+                </td>            
+                `;
+
             subscribeElement(element);
             this.parent.append(element);
         }
     }
 
     class CategoryItem {
-        constructor(value, active, archived, parentSelector) {
+        constructor(value, activeCount, archivedCount, parentSelector) {
             this.value = value;
-            this.active = active;
-            this.archived = archived;
+            this.activeCount = activeCount;
+            this.archivedCount = archivedCount;
             this.parent = document.querySelector(parentSelector);
         }
         render() {
@@ -345,18 +384,19 @@ function notes() {
 
             element.innerHTML = `               
                 <td>${categoryName}</td>
-                <td>${this.active}</td>
-                <td>${this.archived}</td>         
+                <td>${this.activeCount}</td>
+                <td>${this.archivedCount}</td>         
                 `;
             this.parent.append(element);
         }
         updateWithNote(note) {
             if (note.isArchived)
-                this.archived++;
+                this.archivedCount++;
             else
-                this.active++;
+                this.activeCount++;
         }
     }
+
     function getNoteIdFromElement(element) {
         return Number(element.getAttribute('data-noteId'));
     }
@@ -364,28 +404,40 @@ function notes() {
     function subscribeElement(element) {
         const btnEdit = element.querySelector("#edit"),
             btnArchive = element.querySelector("#archive"),
+            btnUnarchive = element.querySelector("#unarchive"),
             btnDelete = element.querySelector("#delete");
 
-        btnEdit.addEventListener('click', (e) => {
-            e.preventDefault();
-            const noteId = getNoteIdFromElement(e.target);
-            (0,_modal__WEBPACK_IMPORTED_MODULE_1__.openModalForNote)(noteById[noteId]);
-        });
-        btnArchive.addEventListener('click', (e) => {
-            e.preventDefault();
-            const noteId = getNoteIdFromElement(e.target);
-            markNoteAsArchived(noteById[noteId]);
-        })
-        btnDelete.addEventListener('click', (e) => {
-            e.preventDefault();
-            const noteId = getNoteIdFromElement(e.target);
-            deleteNoteFromServer(noteId);
-        })
+        if (btnEdit)
+            btnEdit.addEventListener('click', (e) => {
+                e.preventDefault();
+                const noteId = getNoteIdFromElement(e.target);
+                (0,_modal__WEBPACK_IMPORTED_MODULE_1__.openModalForNote)(noteById[noteId]);
+            });
+
+        if (btnArchive)
+            btnArchive.addEventListener('click', (e) => {
+                e.preventDefault();
+                const noteId = getNoteIdFromElement(e.target);
+                changeNoteArchivation(noteById[noteId], true);
+            })
+
+        if (btnUnarchive)
+            btnUnarchive.addEventListener('click', (e) => {
+                e.preventDefault();
+                const noteId = getNoteIdFromElement(e.target);
+                changeNoteArchivation(noteById[noteId], false);
+            })
+
+        if (btnDelete)
+            btnDelete.addEventListener('click', (e) => {
+                e.preventDefault();
+                const noteId = getNoteIdFromElement(e.target);
+                deleteNoteFromServer(noteId);
+            })
     }
 
-    function markNoteAsArchived(note) {
-        console.log('archive')
-        note.isArchived = true;
+    function changeNoteArchivation(note, isArchived) {
+        note.isArchived = isArchived;
         const json = JSON.stringify(note);
         console.log(json);
 
@@ -459,7 +511,11 @@ function notes() {
             if (categoryItem)
                 categoryItem.updateWithNote(item);
             else
-                notesByCategory[item.category] = new CategoryItem(item.category, 0, 0, "#table_summary");
+                notesByCategory[item.category] = new CategoryItem(
+                    item.category,
+                    item.isArchived ? 0 : 1,
+                    item.isArchived ? 1 : 0,
+                    "#table_summary");
         });
 
         for (const [key, value] of Object.entries(notesByCategory)) {
@@ -472,7 +528,9 @@ function notes() {
             data.forEach((item) => {
                 noteById[item.id] = item;
 
-                if (!item.isArchived)
+                if (item.isArchived)
+                    new ArchivedNoteItem(item.id, item.name, item.created, item.category, item.content, item.dates, "#table_archieved").render();
+                else
                     new NoteItem(item.id, item.name, item.created, item.category, item.content, item.dates, "#table_notes").render();
             })
 
@@ -496,7 +554,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "deleteData": () => (/* binding */ deleteData),
 /* harmony export */   "editData": () => (/* binding */ editData),
-/* harmony export */   "getData": () => (/* binding */ getResource),
+/* harmony export */   "getData": () => (/* binding */ getData),
 /* harmony export */   "postData": () => (/* binding */ postData)
 /* harmony export */ });
 const postData = async (url, data) => {
@@ -512,7 +570,7 @@ const postData = async (url, data) => {
     return await res.json();
 };
 
-const getResource = async (url) => {
+const getData = async (url) => {
     const res = await fetch(url);
 
     if (!res.ok) {
