@@ -1,0 +1,159 @@
+{
+  "notes": [
+    {
+      "id": 0,
+      "name": "Shopping list",
+      "created": 1653084000000,
+      "category": "task",
+      "content": "Tomatoes, bread",
+      "dates": []
+    },
+    {
+      "id": 1,
+      "name": "The theory of evolution",
+      "created": 1645657200000,
+      "category": "random",
+      "content": "The evolution is a very hard question. ",
+      "dates": []
+    },
+    {
+      "id": 2,
+      "name": "New Feature",
+      "created": 1641250800000,
+      "category": "idea",
+      "content": "Add table with archived notes sdfsad",
+      "dates": []
+    },
+    {
+      "name": "todo for today",
+      "category": "task",
+      "content": "Read 20 pages about projects architecture",
+      "created": 1663753780000,
+      "dates": [],
+      "id": 4
+    },
+    {
+      "name": "War",
+      "category": "random",
+      "content": "I feel strange things, as it was 22.02.2022, when i've decided to move from my country",
+      "created": 1663753879000,
+      "dates": [
+        1645484400000
+      ],
+      "id": 5
+    },
+    {
+      "name": "Weather thoughts",
+      "category": "random",
+      "content": "When it is cold outside, it's easier to work",
+      "created": 1663766641000,
+      "dates": [],
+      "id": 6,
+      "isArchived": false
+    },
+    {
+      "name": "Thursday",
+      "category": "task",
+      "content": "Go to the PostOffice after 5p.m.",
+      "created": 1663844076000,
+      "dates": [],
+      "id": 8
+    },
+    {
+      "name": "todo",
+      "category": "task",
+      "content": "Finish pull request fixing untill 29.09.2022",
+      "created": 1663844218000,
+      "dates": [
+        1664402400000
+      ],
+      "id": 9
+    },
+    {
+      "name": "todo",
+      "category": "task",
+      "content": "a need to finish project 21.09.2022 or 23.09.2022, because deadline for 3 projects is 30.09.2022",
+      "created": 1663845680000,
+      "dates": [
+        1663711200000,
+        1663884000000,
+        1664488800000
+      ],
+      "id": 11
+    },
+    {
+      "name": "check",
+      "category": "idea",
+      "content": "what if i try to hvjhv create a note with 4 dates: 22.09.2022, 23.09.2022 and finnaly 25.09.2022",
+      "created": 1663846803000,
+      "dates": [
+        1663797600000,
+        1663884000000,
+        1664056800000
+      ],
+      "id": 12
+    },
+    {
+      "name": "Uliana",
+      "category": "task",
+      "content": "dwedsvfscwefwefwefw",
+      "created": 1663917536000,
+      "dates": [],
+      "id": 13
+    },
+    {
+      "name": "check",
+      "category": "idea",
+      "content": "i should take an antibiotik",
+      "created": 1663917640000,
+      "dates": [],
+      "id": 14,
+      "isArchived": true
+    },
+    {
+      "name": "check",
+      "category": "task",
+      "content": "What if i try to create note",
+      "created": 1663920601000,
+      "dates": [],
+      "id": 19,
+      "isArchived": true
+    },
+    {
+      "name": "Thursday",
+      "category": "random",
+      "content": "dwedsvfscwefwefwefw",
+      "created": 1663920815000,
+      "dates": [],
+      "id": 20,
+      "isArchived": true
+    },
+    {
+      "name": "Uliana",
+      "category": "random",
+      "content": "What if i try to create note",
+      "created": 1663920867000,
+      "dates": [],
+      "id": 21,
+      "isArchived": true
+    },
+    {
+      "name": "Uliana Plakhotnycha ",
+      "category": "idea",
+      "content": "What if i try to create note",
+      "created": 1663941806000,
+      "dates": [],
+      "id": 23,
+      "isArchived": true
+    },
+    {
+      "name": "Coffee",
+      "category": "random",
+      "content": "Meet for a coffee with ukrainian in Poland",
+      "created": 1664117362000,
+      "dates": [],
+      "id": 24
+    }
+  ],
+  "archive": []
+}

@@ -1,0 +1,201 @@
+@import url(https://fonts.googleapis.com/css?family=Roboto:300,400,700&display=swap&subset=cyrillic-ext);
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Roboto, sans-serif
+}
+
+a {
+    text-decoration: none
+}
+table{
+    border-collapse: collapse;
+}
+
+.note__title {
+    width: 100%;
+    height: 35px;
+    background: rgb(64, 66, 67);
+    box-shadow: 0 4px 25px rgba(0, 0, 0, .25);
+    font-size: 16px;
+    font-weight: 400;
+    color: #fff;
+}
+
+.note__item {
+    width: 100%;
+    height: 35px;
+    background: rgb(201, 224, 237);
+    box-shadow: 0 4px 25px rgba(0, 0, 0, .25);
+    font-size: 16px;
+    font-weight: 300;
+    color: rgb(6, 6, 6);
+}
+
+th,
+td {
+    padding: 5px;
+}
+
+.btn {
+    width: 220px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff;
+    font-size: 18px;
+    font-weight: 700;
+    border: 1px solid rgba(0, 0, 0, .2);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, .2);
+    cursor: pointer;
+    transition: .3s all;
+    outline: 0
+}
+.btn_white {
+    background-color: #fff
+}
+
+.btn_dark {
+    background-color: #303030;
+    color: #fff;
+    border: none
+}
+
+.btn_min {
+    height: 50px
+}
+
+.btn_small {
+    height: 10px;
+    width: 10px;
+}
+
+.btn:hover {
+    box-shadow: 0 4px 30px rgba(0, 0, 0, .3)
+}
+
+.btn_icon {
+    height: 20px;
+    cursor: pointer;
+    transition: .3s all;
+    outline: 0;
+    justify-content: right;
+    align-items: right;
+}
+
+.btn_icon:hover {
+    box-shadow: 0 4px 30px rgba(0, 0, 0, .3)
+}
+
+.table__wrapper {
+    padding: 0 100px;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1050;
+    display: none;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-color: rgba(0, 0, 0, .5)
+}
+
+.modal__dialog {
+    max-width: 500px;
+    margin: 40px auto
+}
+
+.modal__content {
+    position: relative;
+    width: 100%;
+    padding: 40px;
+    background-color: #fff;
+    border: 1px solid rgba(0, 0, 0, .2);
+    border-radius: 4px;
+    max-height: 80vh;
+    overflow-y: auto
+}
+
+.modal__close {
+    position: absolute;
+    top: 8px;
+    right: 14px;
+    font-size: 30px;
+    color: #000;
+    opacity: .5;
+    font-weight: 700;
+    border: none;
+    background-color: transparent;
+    cursor: pointer
+}
+
+.modal__title {
+    text-align: center;
+    font-size: 22px;
+    text-transform: uppercase
+}
+
+.modal__input {
+    display: block;
+    margin: 20px auto 20px auto;
+    width: 280px;
+    height: 50px;
+    background: #fff;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, .2);
+    border: none;
+    font-size: 18px;
+    text-align: center;
+    padding: 0 20px;
+    outline: 0
+}
+
+.modal__select {
+    display: block;
+    margin: 20px auto 20px auto;
+    width: 280px;
+    height: 50px;
+    background: #fff;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, .2);
+    border: none;
+    font-size: 18px;
+    text-align: center;
+    padding: 0 20px;
+    outline: 0
+}
+
+.modal .btn {
+    display: block;
+    width: 280px;
+    margin: 0 auto
+}
+
+.show {
+    display: block
+}
+
+.hide {
+    display: none
+}
+
+.fade {
+    animation-name: fade;
+    animation-duration: 1.5s;
+}
+
+@keyframes fade {
+    from {
+        opacity: 0.1;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
