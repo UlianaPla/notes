@@ -50,9 +50,6 @@ class App extends Component {
         }
     }
 
-    addNote = (newItem) => {
-
-    }
     /**
      * Fill data from Form with needed data.
      * @returns Object of Note, that shoul be saved.
@@ -76,9 +73,11 @@ class App extends Component {
 
         return (
             <div className="app">
-                <NoteListHeader />
-                <NotesList />
+                <NoteListHeader archived={false} />
+                <NotesList archived={false} />
                 <CreateNoteBtn />
+                <NoteListHeader archived={true} />
+                <NotesList archived={true} />
                 <NotesAddForm
                     onSubmited={this.onNoteSubmited} />
 

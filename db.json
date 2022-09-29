@@ -58,7 +58,7 @@
       "created": 1663844076000,
       "dates": [],
       "id": 8,
-      "isArchived": true
+      "isArchived": false
     },
     {
       "name": "todo",
@@ -101,7 +101,7 @@
       "created": 1664459273000,
       "dates": [],
       "id": 13,
-      "isArchived": true
+      "isArchived": false
     },
     {
       "name": "archive2",
@@ -110,7 +110,7 @@
       "created": 1664459389000,
       "dates": [],
       "id": 14,
-      "isArchived": true
+      "isArchived": false
     },
     {
       "name": "123qwed",
@@ -145,7 +145,7 @@
       "created": 1664459628000,
       "dates": [],
       "id": 18,
-      "isArchived": true
+      "isArchived": false
     },
     {
       "name": "eqwe",
@@ -154,7 +154,7 @@
       "created": 1664459769000,
       "dates": [],
       "id": 19,
-      "isArchived": true
+      "isArchived": false
     }
   ],
   "archive": []

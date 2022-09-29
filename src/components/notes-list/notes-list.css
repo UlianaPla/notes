@@ -1,11 +1,12 @@
 .app-list {
-    background-color: #3d5a80;
+    background-color: #b3c7e2;
     border-radius: 4px;
     box-shadow: 15px 15px 30px rgba(0, 0, 0, .15);
     color: #fff;
 }
 
 .list-header {
+    margin-top: 30px;
     background-color: tan;
     padding: 13px 13px;
     border-bottom: 1px solid #3d5a80;
@@ -40,11 +41,30 @@
 
 .list-header .btn-trash {
     color: #e5383b;
-} 
+}
 
 .list-header .btn-archive {
     color: #e09f3e;
-} 
+}
 
-nav ul{height:500px; width:100%;}
-nav ul{overflow:hidden; overflow-y:scroll;}
+.list-header .btn-unarchive {
+    color: #24771e;
+}
+
+.ist-header .show {
+    display: block
+}
+
+.ist-header .hide {
+    display: none
+}
+
+nav ul {
+    max-height: 500px;
+    width: 100%;
+}
+
+nav ul {
+    overflow: hidden;
+    overflow-y: scroll;
+}

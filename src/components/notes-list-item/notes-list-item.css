@@ -42,7 +42,19 @@
     color: #e09f3e;
 }
 
+.list-group-item .btn-unarchive {
+    color: #24771e;
+}
+
 .list-group-item.increase .list-group-item-label,
 .list-group-item.increase .list-group-item-input {
     color: #e09f3e;
+}
+
+.list-group-item .show {
+    display: block
+}
+
+.list-group-item .hide {
+    display: none
 }

@@ -3,8 +3,23 @@ import { Component } from 'react';
 import './notes-list.css';
 
 class NoteListHeader extends Component {
-
     render() {
+        const { archived } = this.props;
+
+        let classesArchive = "btn-archive btn-sm ";
+        let classesUnarchive = "btn-unarchive btn-sm ";
+        let classesEdit = "btn-pencil btn-sm "
+
+        if (archived) {
+            classesArchive += "hide";
+            classesUnarchive += "show";
+            classesEdit += "hide";
+        }
+        else {
+            classesArchive += "show";
+            classesUnarchive += "hide";
+            classesEdit += "show";
+        }
 
         return (
             <div className="list-header d-flex justify-content-between">
@@ -16,7 +31,7 @@ class NoteListHeader extends Component {
 
                 <div className='d-flex justify-content-center align-items-center'>
                     <button type="button" disabled={true}
-                        className="btn-pencil btn-sm ">
+                        className={classesEdit}>
                         <i className="fa-solid fa-pencil"></i>
                     </button>
 
@@ -26,11 +41,16 @@ class NoteListHeader extends Component {
                     </button>
 
                     <button type="button" disabled={true}
-                        className="btn-archive btn-sm " >
+                        className={classesArchive}>
+                        <i className="fa-solid fa-box-archive"></i>
+                    </button>
+
+                    <button type="button" disabled={true}
+                        className={classesUnarchive}>
                         <i className="fa-solid fa-box-archive"></i>
                     </button>
                 </div>
-            </div>
+            </div >
         )
     }
 }

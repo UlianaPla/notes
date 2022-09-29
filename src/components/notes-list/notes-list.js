@@ -28,23 +28,35 @@ class NotesList extends Component {
             .catch(() => this.props.showAlert('cannot archive'));
     }
 
+    unarchiveItem = (item) => {
+        const updatedItem = {
+            ...item,
+            isArchived: false
+        }
+
+        editData(urlNotes + `/${updatedItem.id}`, JSON.stringify(updatedItem))
+            .then(() => this.props.update(updatedItem))
+            .catch(() => this.props.showAlert('cannot unarchive'));
+    }
+
     viewItem = (item) => {
         this.props.showModal(item);
     }
 
     render() {
 
-        const { data } = this.props;
+        const { data, archived } = this.props;
 
-        const elements = data.filter(elem => !elem.isArchived).map(item => {
+        const elements = data.filter(elem => elem.isArchived === archived).map(item => {
 
             const { id, ...itemProps } = item;
             return (
                 <NoteListItem
                     key={id}
-                    {...itemProps}
+                    {...itemProps} archived={archived}
                     onDelete={() => this.deleteItem(id)}
                     onArchive={() => this.archiveItem(item)}
+                    onUnarchive={() => this.unarchiveItem(item)}
                     onEdit={() => this.viewItem(item)} />
             )
         })
