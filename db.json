@@ -57,7 +57,8 @@
       "content": "Go to the PostOffice after 5p.m.",
       "created": 1663844076000,
       "dates": [],
-      "id": 8
+      "id": 8,
+      "isArchived": true
     },
     {
       "name": "todo",
@@ -94,12 +95,65 @@
       "id": 12
     },
     {
-      "name": "check",
+      "name": "checkArchivation",
       "category": "idea",
-      "content": "i should take an antibiotik",
-      "created": 1663917640000,
+      "content": "archivation check",
+      "created": 1664459273000,
+      "dates": [],
+      "id": 13,
+      "isArchived": true
+    },
+    {
+      "name": "archive2",
+      "category": "task",
+      "content": "222archive check",
+      "created": 1664459389000,
       "dates": [],
       "id": 14,
+      "isArchived": true
+    },
+    {
+      "name": "123qwed",
+      "category": "task",
+      "content": "12eqw",
+      "created": 1664459470000,
+      "dates": [],
+      "id": 15,
+      "isArchived": true
+    },
+    {
+      "name": "zczcsa",
+      "category": "task",
+      "content": "asdasdsa",
+      "created": 1664459517000,
+      "dates": [],
+      "id": 16,
+      "isArchived": true
+    },
+    {
+      "name": "dedfscd",
+      "category": "task",
+      "content": "wqdas",
+      "created": 1664459622000,
+      "dates": [],
+      "id": 17
+    },
+    {
+      "name": "sadedfscd",
+      "category": "",
+      "content": "wqdasasd",
+      "created": 1664459628000,
+      "dates": [],
+      "id": 18,
+      "isArchived": true
+    },
+    {
+      "name": "eqwe",
+      "category": "task",
+      "content": "qwdwa",
+      "created": 1664459769000,
+      "dates": [],
+      "id": 19,
       "isArchived": true
     }
   ],

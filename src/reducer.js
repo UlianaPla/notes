@@ -22,6 +22,17 @@ const reducer = (state = initialState, action) => {
                 needShowAlert: true,
                 alertText: 'Note has been added'
             };
+
+        case "UPDATE":
+            const result = state.items.filter(elem => elem.id !== action.payload.id);
+            result.push(action.payload);
+
+            return {
+                ...state,
+                items: result,
+                needShowAlert: true,
+                alertText: 'Note has been updated'
+            };
         case "DEL":
             return {
                 ...state,

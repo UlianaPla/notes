@@ -1,26 +1,12 @@
 import { Component } from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators } from "redux";
-import * as actions from "../../actions";
 import { formatString, parseDate, parseDates, getCategoryName } from '../../services/formatter';
-import { deleteData } from "../../services/services";
 
 import './notes-list-item.css';
 
-const urlNotes = 'http://localhost:3000/notes';
-
 class NoteListItem extends Component {
 
-    deleteItem = () => {
-        const {id} = this.props;
-
-        deleteData(urlNotes + `/${id}`)
-            .then(() => this.props.del(id))
-            .catch(() => this.props.showAlert('cannot delete'));
-    }
-
     render() {
-        const { name, created, category, content, dates } = this.props;
+        const { name, created, category, content, dates, onDelete, onArchive } = this.props;
 
         const nameFormatted = formatString(name),
             createdAsString = parseDate(created),
@@ -44,12 +30,13 @@ class NoteListItem extends Component {
 
                     <button type="button"
                         className="btn-trash btn-sm "
-                        onClick={this.deleteItem}>
+                        onClick={onDelete}>
                         <i className="fas fa-trash"></i>
                     </button>
 
                     <button type="button"
-                        className="btn-archive btn-sm ">
+                        className="btn-archive btn-sm " 
+                        onClick={onArchive}>
                         <i className="fa-solid fa-box-archive"></i>
                     </button>
                 </div>
@@ -58,15 +45,4 @@ class NoteListItem extends Component {
     }
 }
 
-const mapStateToProps = (state) => {
-    return state;
-}
-
-const mapDispatchToProps = (dispatch) => {
-    const { del } = bindActionCreators(actions, dispatch);
-    return {
-        del
-    };
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(NoteListItem);
+export default NoteListItem;
