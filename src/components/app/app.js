@@ -10,8 +10,11 @@ import NotesList from '../notes-list/notes-list';
 import NotesAddForm from '../notes-add-form/notes-add-form';
 import CreateNoteBtn from '../note-create-btn/note-create-btn';
 import NotesAlert from '../notes-alert/notes-alert';
+import CategoryList from '../category-list/category-list';
+import CategoryHeader from '../category-list/category-header';
 
 import './app.css';
+import Title from '../title/title';
 
 const urlNotes = 'http://localhost:3000/notes';
 
@@ -73,11 +76,20 @@ class App extends Component {
 
         return (
             <div className="app">
+                <Title text="Notes list"/>
                 <NoteListHeader archived={false} />
                 <NotesList archived={false} />
+
                 <CreateNoteBtn />
+
+                <Title text="Summary"/>
+                <CategoryHeader/>
+                <CategoryList/>
+
+                <Title text="Archived Notes"/>
                 <NoteListHeader archived={true} />
                 <NotesList archived={true} />
+
                 <NotesAddForm
                     onSubmited={this.onNoteSubmited} />
 

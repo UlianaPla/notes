@@ -5,51 +5,49 @@ import * as actions from '../../actions';
 
 import './notes-add-form.css';
 
+const defaultCategory = "task";
+
 class NotesAddForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
             name: '',
-            category: 'task',
-            content: '', 
-            isDefault:true
+            category: defaultCategory,
+            content: ''
         }
     }
 
     onValueChange = (e) => {
-        console.log('onChanged');
         this.setState({
-            [e.target.name]: e.target.value,
-            isDefault:false
+            [e.target.name]: e.target.value
         })
     }
-
-    /*
-    onItemCommit = (item) => {
-        this.setState({
-            name: item.name,
-            category: item.category,
-            content: item.content,
-            item: item
-        })
-    }
-*/
 
     onSubmited = (e) => {
         e.preventDefault();
 
-        this.props.onSubmited(this.state.name, this.state.category, this.state.content, this.props.item);
+        let { name, category, content } = this.state;
+        if (this.props.item) {
+            if (name === '')
+                name = this.props.item.name;
+            if (category === '')
+                category = this.props.item.category;
+            if (content === '')
+                content = this.props.item.content;
+        }
+
+        this.props.onSubmited(name, category, content, this.props.item);
         this.setState({
             name: '',
-            category: '',
-            content: '',
-            item: this.props.item
+            category: defaultCategory,
+            content: ''
         })
     }
 
     render() {
-        let { name, category, content , isDefault} = this.state;
+        let { name, category, content } = this.state;
         const { needShow, item, hideModal } = this.props;
+
         let classes = "modal";
 
         if (needShow)
@@ -57,10 +55,11 @@ class NotesAddForm extends Component {
         else
             classes += ' hide';
 
-        if (item && isDefault) {
-            name = item.name;
-            category = item.category;
-            content = item.content;
+        if (item) {
+            if (name === '')
+                name = item.name;
+            if (content === '')
+                content = item.content;
         }
 
         return (

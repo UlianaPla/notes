@@ -1,6 +1,6 @@
-
 const initialState = {
     items: [],
+    notesByCategory: {},
     dataisLoaded: false,
     needShowAlert: false,
     modalInfo: {
@@ -10,36 +10,67 @@ const initialState = {
     alertText: ''
 };
 
+const buildSummary = (data) => {
+    let notesByCategory = {};
+
+    data.forEach((item) => {
+        const categoryItem = notesByCategory[item.category];
+        if (categoryItem) {
+            if (item.isArchived)
+                categoryItem.archivedCount++;
+            else
+                categoryItem.activeCount++;
+        }
+        else {
+            notesByCategory[item.category] = {
+                category: item.category,
+                activeCount: item.isArchived ? 0 : 1,
+                archivedCount: item.isArchived ? 1 : 0
+            };
+        }
+    });
+
+    return notesByCategory;
+}
+
 const reducer = (state = initialState, action) => {
     switch (action.type) {
         case "LOADED":
+            const items =  action.payload;
+
             return {
                 ...state,
-                items: action.payload,
+                items: items, 
+                notesByCategory : buildSummary(items),
                 dataisLoaded: true,
             };
         case "ADD":
+            const newItems = [...state.items, action.payload];
             return {
                 ...state,
-                items: [...state.items, action.payload],
+                items: newItems,
+                notesByCategory : buildSummary(newItems),
                 needShowAlert: true,
                 alertText: 'Note has been added'
             };
 
         case "UPDATE":
-            const result = state.items.filter(elem => elem.id !== action.payload.id);
-            result.push(action.payload);
+            const updated = state.items.filter(elem => elem.id !== action.payload.id);
+            updated.push(action.payload);
 
             return {
                 ...state,
-                items: result,
+                items: updated,
+                notesByCategory : buildSummary(updated),
                 needShowAlert: true,
                 alertText: 'Note has been updated'
             };
         case "DEL":
+            const result = state.items.filter(elem => elem.id !== action.payload);
             return {
                 ...state,
-                items: state.items.filter(elem => elem.id !== action.payload),
+                items: result,
+                notesByCategory : buildSummary(result),
                 needShowAlert: true,
                 alertText: 'Note has been deleted'
             };

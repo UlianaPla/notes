@@ -47,19 +47,21 @@ class NotesList extends Component {
 
         const { data, archived } = this.props;
 
-        const elements = data.filter(elem => elem.isArchived === archived).map(item => {
+        const elements = data
+            .filter(elem => (elem.isArchived === archived) || (!elem.isArchived && !archived))
+            .map(item => {
 
-            const { id, ...itemProps } = item;
-            return (
-                <NoteListItem
-                    key={id}
-                    {...itemProps} archived={archived}
-                    onDelete={() => this.deleteItem(id)}
-                    onArchive={() => this.archiveItem(item)}
-                    onUnarchive={() => this.unarchiveItem(item)}
-                    onEdit={() => this.viewItem(item)} />
-            )
-        })
+                const { id, ...itemProps } = item;
+                return (
+                    <NoteListItem
+                        key={id}
+                        {...itemProps} archived={archived}
+                        onDelete={() => this.deleteItem(id)}
+                        onArchive={() => this.archiveItem(item)}
+                        onUnarchive={() => this.unarchiveItem(item)}
+                        onEdit={() => this.viewItem(item)} />
+                )
+            })
 
         return (
             <nav>
@@ -82,7 +84,7 @@ const mapDispatchToProps = (dispatch) => {
     return {
         del,
         update,
-        showAlert, 
+        showAlert,
         showModal
     };
 }
