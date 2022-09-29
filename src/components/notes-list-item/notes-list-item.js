@@ -6,7 +6,7 @@ import './notes-list-item.css';
 class NoteListItem extends Component {
 
     render() {
-        const { name, created, category, content, dates, onDelete, onArchive } = this.props;
+        const { name, created, category, content, dates, onDelete, onArchive, onEdit } = this.props;
 
         const nameFormatted = formatString(name),
             createdAsString = parseDate(created),
@@ -24,7 +24,8 @@ class NoteListItem extends Component {
 
                 <div className='d-flex justify-content-center align-items-center'>
                     <button type="button"
-                        className="btn-pencil btn-sm ">
+                        className="btn-pencil btn-sm "
+                        onClick={onEdit}>
                         <i className="fa-solid fa-pencil"></i>
                     </button>
 
@@ -35,7 +36,7 @@ class NoteListItem extends Component {
                     </button>
 
                     <button type="button"
-                        className="btn-archive btn-sm " 
+                        className="btn-archive btn-sm "
                         onClick={onArchive}>
                         <i className="fa-solid fa-box-archive"></i>
                     </button>

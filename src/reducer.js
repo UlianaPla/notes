@@ -2,8 +2,11 @@
 const initialState = {
     items: [],
     dataisLoaded: false,
-    needShowModal: false,
     needShowAlert: false,
+    modalInfo: {
+        needShowModal: false,
+        item: undefined
+    },
     alertText: ''
 };
 
@@ -43,12 +46,18 @@ const reducer = (state = initialState, action) => {
         case "SHOW_MODAL":
             return {
                 ...state,
-                needShowModal: true
+                modalInfo: {
+                    needShowModal: true,
+                    item: action.payload
+                }
             };
         case "HIDE_MODAL":
             return {
                 ...state,
-                needShowModal: false
+                modalInfo: {
+                    needShowModal: false,
+                    item: undefined
+                }
             };
         case "SHOW_ALERT":
             return {

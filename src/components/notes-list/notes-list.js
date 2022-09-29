@@ -19,13 +19,17 @@ class NotesList extends Component {
 
     archiveItem = (item) => {
         const updatedItem = {
-            ...item, 
+            ...item,
             isArchived: true
         }
 
         editData(urlNotes + `/${updatedItem.id}`, JSON.stringify(updatedItem))
             .then(() => this.props.update(updatedItem))
             .catch(() => this.props.showAlert('cannot archive'));
+    }
+
+    viewItem = (item) => {
+        this.props.showModal(item);
     }
 
     render() {
@@ -40,7 +44,8 @@ class NotesList extends Component {
                     key={id}
                     {...itemProps}
                     onDelete={() => this.deleteItem(id)}
-                    onArchive={() => this.archiveItem(item)} />
+                    onArchive={() => this.archiveItem(item)}
+                    onEdit={() => this.viewItem(item)} />
             )
         })
 
@@ -61,14 +66,13 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => {
-    const { del, update, showAlert } = bindActionCreators(actions, dispatch);
+    const { del, update, showAlert, showModal } = bindActionCreators(actions, dispatch);
     return {
         del,
         update,
-        showAlert
+        showAlert, 
+        showModal
     };
 }
 
-
-// каждьій раз, когда изменяется state, будет происходить connect, а значит обновятся данніе в компоненте
 export default connect(mapStateToProps, mapDispatchToProps)(NotesList);

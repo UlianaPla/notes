@@ -1,5 +1,6 @@
 import { Component } from 'react';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import * as actions from '../../actions';
 
 import './notes-add-form.css';
@@ -10,7 +11,8 @@ class NotesAddForm extends Component {
         this.state = {
             name: '',
             category: 'task',
-            content: ''
+            content: '',
+            isEditMode: false
         }
     }
 
@@ -32,8 +34,8 @@ class NotesAddForm extends Component {
     }
 
     render() {
-        const { name, category, content } = this.state;
-        const { needShow } = this.props;
+        let { name, category, content } = this.state;
+        const { needShow, item, hideModal } = this.props;
         let classes = "modal";
 
         if (needShow)
@@ -41,16 +43,22 @@ class NotesAddForm extends Component {
         else
             classes += ' hide';
 
+        if (item) {
+            name = item.name;
+            category = item.category;
+            content = item.content;
+        }
+
         return (
             <div className={classes}>
                 <div className="modal__dialog">
                     <div className="modal__content">
                         <form onSubmit={this.onSubmited}>
-                            <div data-close className="modal__close" onClick={this.onClose}>&times;</div>
-                            <div className="modal__title">Fill the fields</div>
+                            <div data-close className="modal__close" onClick={hideModal}>&times;</div>
+                            <div className="modal__title">{item ? "Edit note" : "Fill the fields"}</div>
 
                             <input required placeholder="Note name" name="name" type="text" className="modal__input"
-                                text={name}
+                                value={name}
                                 onChange={this.onValueChange} />
 
                             <select id="noteTypes" name="category" className="modal__select"
@@ -62,10 +70,10 @@ class NotesAddForm extends Component {
                             </select>
 
                             <input required placeholder="Note content" name="content" type="text" className="modal__input"
-                                text={content}
+                                value={content}
                                 onChange={this.onValueChange} />
 
-                            <button className="btn btn-dark" type="submit">Create</button>
+                            <button className="btn btn-dark" type="submit">{item ? "Save" : "Create"}</button>
                         </form>
                     </div>
                 </div>
@@ -76,7 +84,15 @@ class NotesAddForm extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        needShow: state.needShowModal
+        needShow: state.modalInfo.needShowModal,
+        item: state.modalInfo.item
     }
 }
-export default connect(mapStateToProps, actions)(NotesAddForm);
+
+const mapDispatchToProps = (dispatch) => {
+    const { hideModal } = bindActionCreators(actions, dispatch);
+    return {
+        hideModal
+    };
+}
+export default connect(mapStateToProps, mapDispatchToProps)(NotesAddForm);
