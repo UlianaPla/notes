@@ -11,30 +11,44 @@ class NotesAddForm extends Component {
         this.state = {
             name: '',
             category: 'task',
-            content: '',
-            isEditMode: false
+            content: '', 
+            isDefault:true
         }
     }
 
     onValueChange = (e) => {
+        console.log('onChanged');
         this.setState({
-            [e.target.name]: e.target.value
+            [e.target.name]: e.target.value,
+            isDefault:false
         })
     }
+
+    /*
+    onItemCommit = (item) => {
+        this.setState({
+            name: item.name,
+            category: item.category,
+            content: item.content,
+            item: item
+        })
+    }
+*/
 
     onSubmited = (e) => {
         e.preventDefault();
 
-        this.props.onSubmited(this.state.name, this.state.category, this.state.content);
+        this.props.onSubmited(this.state.name, this.state.category, this.state.content, this.props.item);
         this.setState({
             name: '',
             category: '',
-            content: ''
+            content: '',
+            item: this.props.item
         })
     }
 
     render() {
-        let { name, category, content } = this.state;
+        let { name, category, content , isDefault} = this.state;
         const { needShow, item, hideModal } = this.props;
         let classes = "modal";
 
@@ -43,7 +57,7 @@ class NotesAddForm extends Component {
         else
             classes += ' hide';
 
-        if (item) {
+        if (item && isDefault) {
             name = item.name;
             category = item.category;
             content = item.content;
@@ -62,7 +76,8 @@ class NotesAddForm extends Component {
                                 onChange={this.onValueChange} />
 
                             <select id="noteTypes" name="category" className="modal__select"
-                                onChange={this.onValueChange} value={category}>
+                                value={category}
+                                onChange={this.onValueChange}>
 
                                 <option value="task" >Task</option>
                                 <option value="random">Random Thought</option>

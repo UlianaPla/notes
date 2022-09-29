@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import { getData, postData, deleteData } from '../../services/services';
+import { getData, postData, editData } from '../../services/services';
 import { parseDatesFromContent } from '../../services/formatter';
 
 import { connect } from "react-redux";
@@ -22,21 +22,54 @@ class App extends Component {
             .then(this.props.loaded)
     }
 
-    onNoteSubmited = (name, category, content) => {
-        const newItem = {
-            name, category, content,
-            created: Date.parse(new Date()),
-            dates: parseDatesFromContent(content)
-        }
+    onNoteSubmited = (name, category, content, item) => {
+        const isEditMode = item !== undefined;
 
-        postData(urlNotes, JSON.stringify(newItem))
-            .then(this.props.add)
-            .catch(() => this.props.showAlert('oops, something went wrong'))
-            .finally(this.props.hideModal);
+        if (isEditMode) {
+            const newItem = {
+                ...item,
+                name, category, content,
+                dates: parseDatesFromContent(content)
+            }
+            editData(urlNotes + `/${newItem.id}`, JSON.stringify(newItem))
+                .then(() => this.props.update(newItem))
+                .catch(() => this.props.showAlert('oops, something went wrong'))
+                .finally(this.props.hideModal);
+
+        }
+        else {
+            const newItem = {
+                name, category, content,
+                created: Date.parse(new Date()),
+                dates: parseDatesFromContent(content)
+            }
+            postData(urlNotes, JSON.stringify(newItem))
+                .then(this.props.add)
+                .catch(() => this.props.showAlert('oops, something went wrong'))
+                .finally(this.props.hideModal);
+        }
+    }
+
+    addNote = (newItem) => {
+
+    }
+    /**
+     * Fill data from Form with needed data.
+     * @returns Object of Note, that shoul be saved.
+     */
+    fillData = (data, isEditMode) => {
+        let dataObj = Object.fromEntries(data);
+
+        if (!isEditMode)
+            dataObj.created = Date.parse(new Date());
+
+        dataObj.dates = parseDatesFromContent(dataObj.content);
+
+        return dataObj;
     }
 
     render() {
-        const { dataisLoaded} = this.props;
+        const { dataisLoaded } = this.props;
 
         if (!dataisLoaded)
             return <div> <h1> Pleses wait some time.... </h1> </div>;
