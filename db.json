@@ -94,14 +94,6 @@
       "id": 12
     },
     {
-      "name": "Uliana",
-      "category": "task",
-      "content": "dwedsvfscwefwefwefw",
-      "created": 1663917536000,
-      "dates": [],
-      "id": 13
-    },
-    {
       "name": "check",
       "category": "idea",
       "content": "i should take an antibiotik",
@@ -109,50 +101,6 @@
       "dates": [],
       "id": 14,
       "isArchived": true
-    },
-    {
-      "name": "check",
-      "category": "task",
-      "content": "What if i try to create note",
-      "created": 1663920601000,
-      "dates": [],
-      "id": 19,
-      "isArchived": true
-    },
-    {
-      "name": "Thursday",
-      "category": "random",
-      "content": "dwedsvfscwefwefwefw",
-      "created": 1663920815000,
-      "dates": [],
-      "id": 20,
-      "isArchived": true
-    },
-    {
-      "name": "Uliana",
-      "category": "random",
-      "content": "What if i try to create note",
-      "created": 1663920867000,
-      "dates": [],
-      "id": 21,
-      "isArchived": true
-    },
-    {
-      "name": "Uliana Plakhotnycha ",
-      "category": "idea",
-      "content": "What if i try to create note",
-      "created": 1663941806000,
-      "dates": [],
-      "id": 23,
-      "isArchived": true
-    },
-    {
-      "name": "Coffee",
-      "category": "random",
-      "content": "Meet for a coffee with ukrainian in Poland",
-      "created": 1664117362000,
-      "dates": [],
-      "id": 24
     }
   ],
   "archive": []
