@@ -12,7 +12,8 @@ class CreateNoteBtn extends Component {
     render() {
         return (
             <div>
-                <button data-modal className="btn btn-outline-dark" onClick={this.showCreateNoteForm}>Create Note</button>
+                <button data-modal className="btn btn-primary"
+                    onClick={this.showCreateNoteForm}>Create Note</button>
             </div>
         )
     }
