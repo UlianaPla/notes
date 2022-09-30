@@ -1,0 +1,22 @@
+.list-group-item {
+    padding: 13px 13px;
+    border-bottom: 1px solid #3d5a80;
+}
+
+.list-group-item:last-child {
+    border-bottom: none;
+}
+
+.list-group-item span {
+    line-height: 17px;
+    font-size: 17px;
+    width: 280px;
+}
+
+.list-group-item .name {
+    width: 200px;
+}
+
+.list-group-item .long {
+    width: 300px;
+}

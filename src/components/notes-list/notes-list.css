@@ -1,0 +1,70 @@
+.app-list {
+    background-color: #b3c7e2;
+    border-radius: 4px;
+    box-shadow: 15px 15px 30px rgba(0, 0, 0, .15);
+    color: #fff;
+}
+
+.list-header {
+    margin-top: 10px;
+    background-color: tan;
+    padding: 13px 13px;
+    border-bottom: 1px solid #3d5a80;
+}
+
+.list-header span {
+    line-height: 17px;
+    font-size: 17px;
+    width: 280px;
+}
+
+.list-header .short {
+    width: 100px;
+}
+
+.list-header .name {
+    width: 200px;
+}
+
+.list-header .long {
+    width: 300px;
+}
+
+.list-header button {
+    background-color: tan;
+    width: 35px;
+    height: 35px;
+    margin: 3px;
+    font-size: 17px;
+    border: none;
+}
+
+.list-header .btn-trash {
+    color: #e5383b;
+}
+
+.list-header .btn-archive {
+    color: #e09f3e;
+}
+
+.list-header .btn-unarchive {
+    color: #24771e;
+}
+
+.ist-header .show {
+    display: block
+}
+
+.ist-header .hide {
+    display: none
+}
+
+nav ul {
+    max-height: 500px;
+    width: 100%;
+}
+
+nav ul {
+    overflow: hidden;
+    overflow-y: scroll;
+}

@@ -1,0 +1,55 @@
+.list-group-item {
+    padding: 13px 13px;
+    border-bottom: 1px solid #3d5a80;
+}
+
+.list-group-item:last-child {
+    border-bottom: none;
+}
+
+.list-group-item span {
+    line-height: 17px;
+    font-size: 17px;
+    width: 280px;
+}
+
+.list-group-item .short {
+    width: 100px;
+}
+
+.list-group-item .name {
+    width: 200px;
+}
+
+.list-group-item .long {
+    width: 300px;
+}
+
+.list-group-item button {
+    width: 35px;
+    height: 35px;
+    margin: 3px;
+    font-size: 17px;
+    border: none;
+    cursor: pointer;
+}
+
+.list-group-item .btn-trash {
+    color: #e5383b;
+}
+
+.list-group-item .btn-archive {
+    color: #e09f3e;
+}
+
+.list-group-item .btn-unarchive {
+    color: #24771e;
+}
+
+.list-group-item .show {
+    display: block
+}
+
+.list-group-item .hide {
+    display: none
+}
