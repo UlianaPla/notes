@@ -25,7 +25,7 @@ class App extends Component {
             .then(this.props.loaded)
     }
 
-    onNoteSubmited = (name, category, content, item) => {
+    onNoteSubmitted = (name, category, content, item) => {
         const isEditMode = item !== undefined;
 
         if (isEditMode) {
@@ -55,7 +55,7 @@ class App extends Component {
 
     /**
      * Fill data from Form with needed data.
-     * @returns Object of Note, that shoul be saved.
+     * @returns Object of Note, that should be saved.
      */
     fillData = (data, isEditMode) => {
         let dataObj = Object.fromEntries(data);
@@ -69,10 +69,10 @@ class App extends Component {
     }
 
     render() {
-        const { dataisLoaded } = this.props;
+        const { dataIsLoaded } = this.props;
 
-        if (!dataisLoaded)
-            return <div> <h1> Pleses wait some time.... </h1> </div>;
+        if (!dataIsLoaded)
+            return <div> <h1> Please wait some time.... </h1> </div>;
 
         return (
             <div className="app">
@@ -91,7 +91,7 @@ class App extends Component {
                 <NotesList archived={true} />
 
                 <NotesAddForm
-                    onSubmited={this.onNoteSubmited} />
+                    onSubmitted={this.onNoteSubmitted} />
 
                 <NotesAlert />
 
@@ -102,7 +102,7 @@ class App extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        dataisLoaded: state.dataisLoaded
+        dataIsLoaded: state.dataIsLoaded
     }
 }
 

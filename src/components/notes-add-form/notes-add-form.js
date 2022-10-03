@@ -23,7 +23,7 @@ class NotesAddForm extends Component {
         })
     }
 
-    onSubmited = (e) => {
+    onSubmitted = (e) => {
         e.preventDefault();
 
         let { name, category, content } = this.state;
@@ -36,7 +36,7 @@ class NotesAddForm extends Component {
                 content = this.props.item.content;
         }
 
-        this.props.onSubmited(name, category, content, this.props.item);
+        this.props.onSubmitted(name, category, content, this.props.item);
         this.setState({
             name: '',
             category: defaultCategory,
@@ -66,7 +66,7 @@ class NotesAddForm extends Component {
             <div className={classes}>
                 <div className="modal__dialog">
                     <div className="modal__content">
-                        <form onSubmit={this.onSubmited}>
+                        <form onSubmit={this.onSubmitted}>
                             <div data-close className="modal__close" onClick={hideModal}>&times;</div>
                             <div className="modal__title">{item ? "Edit note" : "Fill the fields"}</div>
 
