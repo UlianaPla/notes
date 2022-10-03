@@ -1,7 +1,7 @@
 const initialState = {
     items: [],
     notesByCategory: {},
-    dataisLoaded: false,
+    dataIsLoaded: false,
     needShowAlert: false,
     modalInfo: {
         needShowModal: false,
@@ -42,7 +42,7 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 items: items, 
                 notesByCategory : buildSummary(items),
-                dataisLoaded: true,
+                dataIsLoaded: true,
             };
         case "ADD":
             const newItems = [...state.items, action.payload];

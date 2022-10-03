@@ -140,15 +140,6 @@
       "id": 17
     },
     {
-      "name": "eqwe",
-      "category": "task",
-      "content": "qwdwa",
-      "created": 1664459769000,
-      "dates": [],
-      "id": 19,
-      "isArchived": false
-    },
-    {
       "name": "late night",
       "category": "task",
       "content": "Light night show",
@@ -172,6 +163,15 @@
       "created": 1664488831000,
       "dates": [],
       "id": 23
+    },
+    {
+      "name": "check after rename",
+      "category": "task",
+      "content": "Was renamed some variables. needs to check application running",
+      "created": 1664782774000,
+      "dates": [],
+      "id": 24,
+      "isArchived": true
     }
   ],
   "archive": []

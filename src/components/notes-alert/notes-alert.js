@@ -14,7 +14,7 @@ class NotesAlert extends Component {
 
         if (needShow) {
             classes += ' show';
-            setTimeout(this.props.hideAlert, 500);
+            setTimeout(this.props.hideAlert, 1500);
         }
         else {
             classes += ' hide';
